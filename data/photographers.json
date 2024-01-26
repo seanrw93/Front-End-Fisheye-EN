@@ -7,7 +7,7 @@
 			"country": "UK",
 			"tagline": "See the beauty of daily moments",
 			"price": 400,
-			"portrait": "MimiKeel.jpg"
+			"portrait": "../photographers/Photographers_ID_Photos/MimiKeel.jpg"
 		},
 		{
 			"name": "Ellie-Rose Wilkens",
@@ -16,7 +16,7 @@
 			"country": "France",
 			"tagline": "Capture complexe compositions",
 			"price": 250,
-			"portrait": "EllieRoseWilkens.jpg"
+			"portrait": "../photographers/Photographers_ID_Photos/EllieRoseWilkens.jpg"
 		},
 		{
 			"name": "Tracy Galindo",
@@ -25,7 +25,7 @@
 			"country": "Canada",
 			"tagline": "Freelance photographer",
 			"price": 500,
-			"portrait": "TracyGalindo.jpg"
+			"portrait": "../photographers/Photographers_ID_Photos/TracyGalindo.jpg"
 		},
 		{
 			"name": "Nabeel Bradford",
@@ -34,7 +34,7 @@
 			"country": "Mexico",
 			"tagline": "Always produce better photography",
 			"price": 350,
-			"portrait": "NabeelBradford.jpg"
+			"portrait": "../photographers/Photographers_ID_Photos/NabeelBradford.jpg"
 		},
 		{
 			"name": "Rhode Dubois",
@@ -43,7 +43,7 @@
 			"country": "Spain",
 			"tagline": "Memory factory",
 			"price": 275,
-			"portrait": "RhodeDubois.jpg"
+			"portrait": "../photographers/Photographers_ID_Photos/RhodeDubois.jpg"
 		},
 		{
 			"name": "Marcel Nikolic",
@@ -52,7 +52,7 @@
 			"country": "Germany",
 			"tagline": "Eternal pusrsuit of the one great photo",
 			"price": 300,
-			"portrait": "MarcelNikolic.jpg"
+			"portrait": "../photographers/Photographers_ID_Photos/MarcelNikolic.jpg"
 		}
 	],
 	"media": [

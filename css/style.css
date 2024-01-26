@@ -3,6 +3,7 @@
 body {
     font-family: "DM Sans", sans-serif;
     margin: 0;
+    box-sizing: border-box;
 }
 
 
@@ -26,25 +27,79 @@ h1 {
 
 .photographer_section {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 70px;
     margin-top: 100px;
 }
 
 .photographer_section article {
-    justify-self: center;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.photographer_section article > *:not(:nth-child(1)) {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .photographer_section article h2 {
     color: #D3573C;
     font-size: 36px;
+    font-weight: normal;
+}
+.photographer_section article a {
+    margin-bottom: 30px;
 }
 
 .photographer_section article img {
     height: 200px;
     width: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.photographer_section article img:hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+}
+
+.photographer_section article img:active {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.photographer_section article h3 {
+    color: #901C1C;
+    font-weight: normal;
+}
+
+.photographer_section article p:first-child {
+    color: #000;
+}
+
+.photographer_section article p:last-child {
+    color: #757575;
+}
+
+@media (max-width: 775px) {
+    .header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .photographer_section {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 776px) and (max-width: 1095px) {
+    .photographer_section {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
