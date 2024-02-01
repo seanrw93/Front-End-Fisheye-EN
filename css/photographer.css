@@ -3,15 +3,21 @@
     justify-content: space-between;
     align-items: center;
     background-color: #FAFAFA;
-    height: 300px;
     margin: 0 100px;
     padding: 45px 35px;
+}
+
+.photographer-info .photographer-name {
+    font-size:  64px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .modal_button {
     font-size: 20px;
     font-weight: bold;
     color: white;
+    margin: 0 auto;
     padding: 11px;
     width: 170px;
     height: 70px;
@@ -39,6 +45,11 @@
     height: auto;
     padding: 35px;
     overflow: hidden;
+}
+
+.close_button {
+    background: transparent;
+    border: none;
 }
 
 #contact_modal header {
@@ -90,4 +101,31 @@ form textarea {
     border: none;
     border-radius: 5px;
     margin-bottom: 15px;
+}
+
+@media screen and (max-width: 776px) {
+    .photograph-header {
+        display: flex;
+        flex-direction: column;
+        padding: 15px 20px;
+    }
+
+    .contact_button {
+        order: 3
+    }
+
+    .photograph-header .photgrapher-info {
+        order: 1;
+    }
+
+    
+    .photographer-info .photographer-name {
+        font-size: 48px;
+    }
+
+    .photograph-header .photographer-portrait {
+        order: 2;
+        margin: 50px auto;
+    }
+
 }

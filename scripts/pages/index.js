@@ -1,33 +1,61 @@
-    async function getPhotographers() {
-        try {
-            const response = await fetch("./data/photographers.json");
-            if (!response.ok) {
-                throw new Error("HTTP error " + response.status);
+async function getPhotographers(id = null) {
+    try {
+        const response = await fetch("./data/photographers.json");
+        if (!response.ok) {
+            throw new Error("HTTP error " + response.status);
+        }
+        const data = await response.json();
+        if (id) {
+            const photographer = data.photographers.find((photographer) => photographer.id === id);
+            if (!photographer) {
+                throw new Error("Photographer not found");
             }
-            const data = await response.json();
-            console.log(data.photographers);
+            return photographer;
+        } else {
             return data.photographers;
-        } catch (e) {
-            console.log("Failed to fetch photographers data", e);
-            return [];
-        } 
-    }
+        }
+    } catch (e) {
+        console.log("Failed to fetch photographers data: ", e);
+        return null;
+    } 
+}
 
-    async function displayData(photographers) {
-        const photographersSection = document.querySelector(".photographer_section");
+    async function displayData(photographer) {
 
-        photographers.forEach((photographer) => {
-            const photographerModel = photographerFactory(photographer);
-            const userCardDOM = photographerModel.getUserCardDOM();
+        console.log(photographer);
+
+        if (window.location.pathname.includes('index.html')) {
+            const photographersSection = document.querySelector(".photographer_section");
+            const userCardDOM = photographerFactory(photographer).getUserCardDOM();
             photographersSection.appendChild(userCardDOM);
-        });
+        } else if (window.location.pathname.includes('photographer.html')) {
+            const headerCardDOM = photographerFactory(photographer).getPhotographerPageDOM();
+            console.log(headerCardDOM);
+            return headerCardDOM;
+        };
     };
+
 
     async function init() {
-        // Retreive photographer data
-        const photographers = await getPhotographers();
-        displayData(photographers);
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = Number(urlParams.get("id"));
+    
+        if (window.location.pathname.includes('photographer.html')) {
+            if (!id || isNaN(id)) {
+                console.log("No photographer id provided");
+                window.location.href = "index.html";
+                return;
+            }
+            const photographer = await getPhotographers(id);
+            if (photographer) {
+                await displayData(photographer);
+            }
+        } else if (window.location.pathname.includes('index.html')) {
+            const photographers = await getPhotographers();
+            photographers.forEach(displayData);
+        }
     };
     
-    init();
+init();
+
     
