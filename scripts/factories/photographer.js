@@ -1,7 +1,7 @@
 function photographerFactory(data) {
     const { name, portrait, city, country, tagline, price } = data;
 
-    const picture = `assets/photographers/photographers_ID_Photos/${portrait}`;
+    const picture = `assets/photographers/Photographers_ID_Photos/${portrait}`;
 
    //Create img element
     function getImg() {
