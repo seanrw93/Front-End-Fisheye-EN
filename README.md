@@ -2,4 +2,4 @@
 
 ## Project set-up
 
-Nothing to install, just open `index.html`.
+Click [here](https://seanrw93.github.io/Front-End-Fisheye-EN/index.html) for live version.
