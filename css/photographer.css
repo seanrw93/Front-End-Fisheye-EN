@@ -114,9 +114,10 @@ form textarea {
 
 .media-container{
     width: 100%;
-    max-width: 350px;
+    max-width: 342px;
     aspect-ratio: 10 / 9;
     border-radius: 5px;
+    margin: 0 auto;
 }
 
 .media-container img, .media-container video{
@@ -142,6 +143,18 @@ form textarea {
 
 .media-likes {
     font-weight: 500;
+}
+
+.likes-button {
+    background: transparent;
+    color: #901C1C;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.likes-button:active {
+    transform: scale(0.9);
 }
 
 @media screen and (max-width: 776px) {

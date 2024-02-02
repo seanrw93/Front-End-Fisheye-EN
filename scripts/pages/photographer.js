@@ -41,3 +41,33 @@ function sortedByDate(media) {
 }
 
 init();
+
+
+// Increase likes counter when clicking on the heart icon
+async function increaseLikes(e) {
+    const likesCounter = e.currentTarget.parentNode.querySelector('.likes-counter');
+    let counter = Number(likesCounter.textContent);
+    counter++;
+    likesCounter.textContent = counter;
+}
+
+// Function to attach event listeners to likes buttons
+function attachEventListeners() {
+    const likesButtons = document.querySelectorAll('.media-likes button');
+    likesButtons.forEach(button => {
+        button.addEventListener('click', increaseLikes);
+    });
+}
+
+// Create a MutationObserver instance
+const observer = new MutationObserver((mutationsList) => {
+    // If the addedNodes property has one or more nodes
+    for(let mutation of mutationsList) {
+        if(mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            attachEventListeners();
+        }
+    }
+});
+
+// Start observing the document with the configured parameters
+observer.observe(document.body, { childList: true, subtree: true });

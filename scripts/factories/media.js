@@ -32,9 +32,19 @@ function mediaFactory(data) {
         mediaTitle.textContent = title;
         mediaTitle.classList.add('media-title');
 
-        const mediaLikes = document.createElement('p');
-        mediaLikes.textContent = likes;
+        const mediaLikes = document.createElement('div');
         mediaLikes.classList.add('media-likes');
+
+        const button = document.createElement('button');
+        button.classList.add('likes-button');
+        button.innerHTML = '<i class="fas fa-heart"></i>';
+        mediaLikes.appendChild(button);
+
+        const likesCount = document.createElement('span');
+        button.classList.add('likes-button');
+        likesCount.classList.add('likes-counter');
+        likesCount.textContent = likes;
+        mediaLikes.appendChild(likesCount);
 
         info.appendChild(mediaTitle);
         info.appendChild(mediaLikes);
