@@ -1,27 +1,35 @@
 function mediaFactory(data) {
     const { image, video } = data;
 
-    function getMediaDOM() {
-        const mediaDiv = document.createElement( 'div' );
-        div.classList.add("media");
+    function getImg() {
+        const img = document.createElement( 'img' );
+        img.setAttribute("src", `assets/photographers/Photographers_Photos/${image}`);
+        img.setAttribute("alt", "Image");
+        img.classList.add("media-image");
+        return img;
+    }
 
+    function getVideo() {
+        const vid = document.createElement( 'video' );
+        vid.setAttribute("src", `assets/photographers/Photographers_Photos/${video}`);
+        vid.setAttribute("controls", true);
+        vid.classList.add("media-video");
+        return vid;
+    }
+
+    function getMediaDOM() {
+        let mediaDiv = document.querySelector(".media-section");
         if (image) {
-            const img = document.createElement( 'img' );
-            img.setAttribute("src", `assets/photographers/Photographers_Photos/${image}`);
-            img.setAttribute("alt", "Image");
-            img.classList.add("media-image");
-            div.appendChild(img);
+            const img = getImg();
+            mediaDiv.appendChild(img);
         }
 
         if (video) {
-            const video = document.createElement( 'video' );
-            video.setAttribute("src", `assets/photographers/Photographers_Photos/${video}`);
-            video.setAttribute("controls", true);
-            video.classList.add("media-video");
-            div.appendChild(video);
+            const video = getVideo();
+            mediaDiv.appendChild(video);
         }
 
-        return mediaDiv;
+        return { mediaDiv };
     }
 
     return { image, video, getMediaDOM }

@@ -104,6 +104,21 @@ form textarea {
     margin-bottom: 15px;
 }
 
+.media-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    margin: 50px 100px;
+    gap: 20px;
+}
+
+.media-section img, .media-section video{
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
 @media screen and (max-width: 776px) {
     .photograph-header {
         display: flex;

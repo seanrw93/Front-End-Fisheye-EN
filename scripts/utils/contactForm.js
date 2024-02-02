@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = modal.querySelector("form");
 
     function displayModal() {
+        document.body.style.overflow = "hidden";
+        
         modal.style.display = "flex";
         modal.setAttribute("aria-hidden", "false");
         modal.setAttribute("aria-modal", "true");
@@ -12,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function closeModal() {
+        document.body.style.overflow = "auto";
+
         modal.style.display = "none";
         modal.setAttribute("aria-hidden", "true");
         modal.setAttribute("aria-modal", "false");
