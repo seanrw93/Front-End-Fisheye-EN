@@ -36,4 +36,8 @@ async function init() {
     }
 }
 
+function sortedByDate(media) {
+    return media.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
 init();
