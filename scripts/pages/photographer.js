@@ -1,1 +1,5 @@
-//Add JavaScript code linked to the photographer.html page
+async function getMedia(id) {
+    try {
+        const response = await 
+    }
+}
