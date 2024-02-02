@@ -5,6 +5,7 @@
     background-color: #FAFAFA;
     margin: 0 100px;
     padding: 45px 35px;
+    min-width: 220px;
 }
 
 .photographer-info .photographer-name {
@@ -107,25 +108,25 @@ form textarea {
     .photograph-header {
         display: flex;
         flex-direction: column;
-        padding: 15px 20px;
+        padding: 30px 20px;
     }
 
     .contact_button {
         order: 3
     }
 
-    .photograph-header .photgrapher-info {
-        order: 1;
+    .photograph-header .photographer-info {
+        text-align: center;
+    }
+
+    .photograph-header .photographer-portrait {
+        order: 2;
+        margin: 40px auto;
     }
 
     
     .photographer-info .photographer-name {
         font-size: 48px;
-    }
-
-    .photograph-header .photographer-portrait {
-        order: 2;
-        margin: 50px auto;
     }
 
 }

@@ -16,13 +16,13 @@
     <main id="main">
       <div class="photograph-header">
         <div class="photographer-info"></div>
-        <button class="contact_button modal_button">Contact me</button>
+        <button class="contact_button modal_button" aria-label="Contact photographer">Contact me</button>
         <div class="photographer-picture"></div>
       </div>
     </main>
 
     <!-- Modal  start-->
-    <dialog id="contact_modal" role="dialog" aria-labelledby="dialog_label">
+    <dialog id="contact_modal" role="dialog" aria-labelledby="dialog_label" aria-hidden="true">
       <header>
         <h2 id="dialog_label">Contact me</h2>
         <button class="close_button">
@@ -32,26 +32,27 @@
       <form>
         <div>
           <label for="firstName">First name</label>
-          <input id="firstName"  name="firstName" type="text" required/>
+          <input id="firstName"  name="firstName" type="text" aria-required="true" required/>
         </div>
         <div>
           <label for="lastName">Last name</label>
-          <input id="lastName" name="lastName" type="text" required/>
+          <input id="lastName" name="lastName" type="text" aria-required="true" required/>
         </div>
         <div>
           <label for="email">Email</label>
-          <input id="email" name="email" type="email" required/>
+          <input id="email" name="email" type="email" aria-required="true" required/>
         </div>
         <div>
           <label for="message">Your message</label>
           <textarea id="message" name="message" rows="5"></textarea>
-        <button class="submit_button modal_button">Send</button>
+        <button type="submit" class="submit_button modal_button" aria-label="Submit form">Send</button>
       </form>
 		</dialog>
     <!-- Modal end-->
 
-    <script src="scripts/factories/photographer.js" async defer></script>
-    <script src="scripts/pages/index.js" async defer></script>
+    <script src="./scripts/factories/photographer.js" async defer></script>
+    <script src="./scripts/pages/photographer.js" async defer></script>
+    <script src="./scripts/pages/index.js" async defer></script>
     <script src="./scripts/utils/contactForm.js" async defer></script>
   </body>
 </html>
