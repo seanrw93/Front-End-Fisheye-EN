@@ -159,6 +159,28 @@ form textarea {
     transform: scale(0.9);
 }
 
+.fixed-counter {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    width: 376px;
+    height: 69px;
+    background-color: #DB8876;
+    font-size: 24px;
+    font-family: DM Sans, sans-serif;   
+    border-radius: 5px 5px 0 0;
+}
+
+.total-counter {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 80px;
+}
+
 @media screen and (max-width: 776px) {
     .photograph-header {
         display: flex;
