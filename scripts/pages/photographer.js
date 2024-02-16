@@ -23,7 +23,6 @@ async function getMedia(id) {
 
 async function displayMedia(media) {
     const mediaDOM = mediaFactory(media).getMediaDOM();
-    console.log(mediaDOM);
     return mediaDOM;
 }
 
