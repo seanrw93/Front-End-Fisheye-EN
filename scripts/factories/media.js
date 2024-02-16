@@ -4,7 +4,23 @@ function mediaFactory(data) {
     const mediaContainer = document.createElement('div');
     mediaContainer.classList.add('media-container');
 
-    function getImg() {
+    // Function to toggle like button
+    function toggleLike(e) {
+        const likesCounter = e.currentTarget.nextElementSibling;
+        let counter = Number(likesCounter.textContent);
+        if (e.currentTarget.classList.contains('liked')) {
+            e.currentTarget.classList.remove('liked');
+            e.currentTarget.innerHTML = '<i class="far fa-heart"></i>';
+            counter--;
+        } else {
+            e.currentTarget.classList.add('liked');
+            e.currentTarget.innerHTML = '<i class="fas fa-heart"></i>';
+            counter++;
+        }
+        likesCounter.textContent = counter;
+    }
+
+    function createImg() {
         const img = document.createElement( 'img' );
         img.setAttribute("src", `assets/photographers/Photographers_Photos/${image}`);
         img.setAttribute("alt", title);
@@ -14,7 +30,7 @@ function mediaFactory(data) {
         return mediaContainer;
     }
 
-    function getVideo() {
+    function createVideo() {
         const vid = document.createElement( 'video' );
         vid.setAttribute("src", `assets/photographers/Photographers_Photos/${video}`);
         vid.setAttribute("alt", title);
@@ -25,7 +41,7 @@ function mediaFactory(data) {
         return mediaContainer;
     }
 
-    function getInfo() {
+    function createInfo() {
         const info = document.createElement('div');
         info.classList.add('media-info');
 
@@ -39,6 +55,9 @@ function mediaFactory(data) {
         const button = document.createElement('button');
         button.classList.add('likes-button');
         button.innerHTML = '<i class="far fa-heart"></i>';
+
+        button.addEventListener('click', toggleLike);
+        
         mediaLikes.appendChild(button);
 
         const likesCount = document.createElement('span');
@@ -56,16 +75,16 @@ function mediaFactory(data) {
     function getMediaDOM() {
         let mediaDiv = document.querySelector(".media-section");
         if (image) {
-            const img = getImg();
+            const img = createImg();
             mediaDiv.appendChild(img);
         }
 
         if (video) {
-            const video = getVideo();
+            const video = createVideo();
             mediaDiv.appendChild(video);
         }
 
-        const info = getInfo();
+        const info = createInfo();
         mediaContainer.appendChild(info);
 
         return { mediaDiv };
