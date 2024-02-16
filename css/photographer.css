@@ -108,7 +108,7 @@ form textarea {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     justify-content: center;
-    margin: 50px 100px;
+    margin: 50px 100px 130px 100px;
     gap: 20px;
 }
 
@@ -165,7 +165,7 @@ form textarea {
     align-items: center;
     position: fixed;
     bottom: 0;
-    right: 20px;
+    right: 98px;
     width: 376px;
     height: 69px;
     background-color: #DB8876;
