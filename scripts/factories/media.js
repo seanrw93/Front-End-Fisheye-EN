@@ -7,7 +7,7 @@ function mediaFactory(data) {
     function getImg() {
         const img = document.createElement( 'img' );
         img.setAttribute("src", `assets/photographers/Photographers_Photos/${image}`);
-        img.setAttribute("alt", "Image");
+        img.setAttribute("alt", title);
         img.classList.add("media-image");
 
         mediaContainer.appendChild(img);
@@ -17,6 +17,7 @@ function mediaFactory(data) {
     function getVideo() {
         const vid = document.createElement( 'video' );
         vid.setAttribute("src", `assets/photographers/Photographers_Photos/${video}`);
+        vid.setAttribute("alt", title);
         vid.setAttribute("controls", true);
         vid.classList.add("media-video");
 
@@ -37,7 +38,7 @@ function mediaFactory(data) {
 
         const button = document.createElement('button');
         button.classList.add('likes-button');
-        button.innerHTML = '<i class="fas fa-heart"></i>';
+        button.innerHTML = '<i class="far fa-heart"></i>';
         mediaLikes.appendChild(button);
 
         const likesCount = document.createElement('span');

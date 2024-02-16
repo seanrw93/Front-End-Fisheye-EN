@@ -142,7 +142,9 @@ form textarea {
 }
 
 .media-likes {
+    display: flex;
     font-weight: 500;
+    flex-wrap: nowrap;
 }
 
 .likes-button {
