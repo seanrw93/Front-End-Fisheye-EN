@@ -47,7 +47,6 @@ function photographerFactory(data) {
 
     //Create fixed counter element
     function createFixedCounter() {
-
         const likesCounter = document.querySelectorAll('.likes-counter');
         const likesButton = document.querySelectorAll('.likes-button');
 
@@ -82,7 +81,7 @@ function photographerFactory(data) {
 
         //Initial total likes
         counter.textContent = updateTotalLikes();
-        
+
         //Update total likes when a like button is clicked
         likesButton.forEach(button => {
             button.addEventListener('click', () => {

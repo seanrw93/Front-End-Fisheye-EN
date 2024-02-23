@@ -181,6 +181,22 @@ form textarea {
     width: 80px;
 }
 
+.sort-section {
+    margin-top: 20px;
+    margin-left: 100px;
+}
+
+#sort {
+    padding: 10px 10px;
+    border-radius: 5px;
+    background-color: #901C1C;
+    color: white;
+    cursor: pointer;
+}
+#sort option {
+    font-family: DM Sans, sans-serif;
+}
+
 @media screen and (max-width: 776px) {
     .photograph-header {
         display: flex;

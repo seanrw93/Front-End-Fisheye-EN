@@ -26,6 +26,19 @@ async function displayMedia(media) {
     return mediaDOM;
 }
 
+
+function sortBydate(media) {
+    return media.sort((a, b) => new Date(a.date) - new Date(b.date));
+}
+
+function sortedByLikes(media) {
+    return media.sort((a, b) => b.likes - a.likes);
+}
+
+function sortedByTitle(media) {
+    return media.sort((a, b) => a.title.localeCompare(b.title));
+}
+
 async function init() {
     const urlParams = new URLSearchParams(window.location.search);
     const id = Number(urlParams.get("id"));
@@ -33,10 +46,31 @@ async function init() {
     if (media) {
         media.forEach(displayMedia);
     }
-}
 
-function sortedByDate(media) {
-    return media.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // Stock sort functions in object
+    const sortFunctions = {
+        date: sortBydate,
+        popularity: sortedByLikes,
+        title: sortedByTitle
+    }
+
+    // Sort media onchange sort select
+    const sort = document.querySelector('#sort');
+    sort.addEventListener('change', (e) => {
+
+        // Clear media container before sorting
+        const mediaContainer = document.querySelector('.media-section');
+        mediaContainer.innerHTML = '';
+
+        // Get sort function from object based on text content of "option"
+        const sortFunction = sortFunctions[e.target.value];
+        if (sortFunction) {
+            const sortedMedia =sortFunction(media);
+            sortedMedia.forEach(displayMedia);
+        } else {
+            media.forEach(displayMedia);
+        }
+    })
 }
 
 init();
