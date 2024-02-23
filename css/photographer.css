@@ -198,10 +198,20 @@ form textarea {
 }
 
 @media screen and (max-width: 776px) {
+    header {
+        display: flex;
+        justify-content: center !important;
+        width: 100%;
+    }
+
+    .logo {
+        margin: 0 !important;
+    }
     .photograph-header {
         display: flex;
         flex-direction: column;
         padding: 30px 20px;
+        margin: 0;
     }
 
     .contact_button {
@@ -222,4 +232,32 @@ form textarea {
         font-size: 48px;
     }
 
+    .media-section {
+        display: flex;
+        flex-direction: column;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .media-container {
+        margin-bottom: 40px;
+        width: 90%;
+    }
+
+    .fixed-counter {
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 50px;
+        border-radius: 0;
+    }
+
+    .sort-section {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        max-width: 350px;
+        margin: 20px auto;
+    }
 }
