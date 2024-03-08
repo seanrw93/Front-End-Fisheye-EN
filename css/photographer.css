@@ -197,13 +197,13 @@ form textarea {
     font-family: DM Sans, sans-serif;
 }
 
-@media screen and (max-width: 776px) {
-    header {
-        display: flex;
-        justify-content: center !important;
-        width: 100%;
+@media screen and (max-width: 35em) {
+    #contact_modal {
+        width: 70%
     }
+}
 
+@media screen and (max-width: 776px) {
     .logo {
         margin: 0 !important;
     }
