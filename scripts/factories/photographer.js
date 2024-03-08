@@ -51,7 +51,7 @@ function photographerFactory(data) {
         const likesButton = document.querySelectorAll('.likes-button');
 
         function updateTotalLikes() {
-            const totalLikes = Array.from(document.querySelectorAll('.likes-counter')).reduce((acc, like) => acc + parseInt(like.textContent), 0)
+            const totalLikes = Array.from(likesCounter).reduce((acc, like) => acc + parseInt(like.textContent), 0)
 
             let totalCounter = Number(totalLikes)
 
