@@ -137,6 +137,10 @@ function photographerFactory(data) {
 
     function getPhotographerPageDOM() {
 
+        // Change title to photographer's name
+        const title = document.querySelector("title");
+        title.textContent = `Fisheye - ${name}`;
+
         // Create picture info elements
         const divInfo = document.querySelector(".photographer-info");
 
