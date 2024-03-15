@@ -55,6 +55,7 @@ function mediaFactory(data) {
         const button = document.createElement('button');
         button.classList.add('likes-button');
         button.innerHTML = '<i class="far fa-heart"></i>';
+        button.setAttribute('aria-label', 'Like');
 
         button.addEventListener('click', toggleLike);
         
@@ -64,6 +65,7 @@ function mediaFactory(data) {
         button.classList.add('likes-button');
         likesCount.classList.add('likes-counter');
         likesCount.textContent = likes;
+        likesCount.setAttribute('aria-live', 'polite');
         mediaLikes.appendChild(likesCount);
 
         info.appendChild(mediaTitle);

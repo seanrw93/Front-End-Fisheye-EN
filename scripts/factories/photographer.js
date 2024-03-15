@@ -8,7 +8,6 @@ function photographerFactory(data) {
         const img = document.createElement( 'img' );
         img.setAttribute("src", picture)
         img.setAttribute("alt", name)
-        img.setAttribute("aria-label", `Portrait of ${name}`)
         img.classList.add("photographer-portrait")
         return img;
     }
@@ -73,9 +72,12 @@ function photographerFactory(data) {
 
         const container = document.createElement('div');
         container.classList.add('fixed-counter');
+        container.setAttribute('role', 'contentinfo');
 
         const counterDiv = document.createElement('div');
         counterDiv.classList.add('total-counter');
+        counterDiv.setAttribute('role', 'status'); 
+        counterDiv.setAttribute('aria-live', 'polite');
 
         const counter = document.createElement('span');
 
@@ -86,6 +88,7 @@ function photographerFactory(data) {
         likesButton.forEach(button => {
             button.addEventListener('click', () => {
                 counter.textContent = updateTotalLikes();
+                counter.setAttribute('aria-label', `Total likes: ${counter.textContent}`);
             });
         });
         counterDiv.appendChild(counter);
