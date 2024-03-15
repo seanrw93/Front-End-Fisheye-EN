@@ -118,6 +118,13 @@ form textarea {
     aspect-ratio: 10 / 9;
     border-radius: 5px;
     margin: 0 auto;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.media-container:hover {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
 }
 
 .media-container img, .media-container video{
