@@ -21,12 +21,16 @@ function mediaFactory(data) {
     }
 
     function createImg() {
+        const a = document.createElement('a');
+        data.image && a.setAttribute("href", `assets/photographers/Photographers_Photos/${image}`);
+        
         const img = document.createElement( 'img' );
         img.setAttribute("src", `assets/photographers/Photographers_Photos/${image}`);
         img.setAttribute("alt", title);
         img.classList.add("media-image");
 
-        mediaContainer.appendChild(img);
+        a.appendChild(img);
+        mediaContainer.appendChild(a);
         return mediaContainer;
     }
 
@@ -44,6 +48,13 @@ function mediaFactory(data) {
     function createInfo() {
         const info = document.createElement('div');
         info.classList.add('media-info');
+
+        const a = document.createElement('a');
+        const imageUrl = data.image ? `assets/photographers/Photographers_Photos/${data.image}` : null;
+        const videoUrl = data.video ? `assets/photographers/Photographers_Photos/${data.video}` : null;
+        const href = imageUrl || videoUrl;
+
+        href && a.setAttribute("href", href);
 
         const mediaTitle = document.createElement('h2');
         mediaTitle.textContent = title;
@@ -68,7 +79,8 @@ function mediaFactory(data) {
         likesCount.setAttribute('aria-live', 'polite');
         mediaLikes.appendChild(likesCount);
 
-        info.appendChild(mediaTitle);
+        a.appendChild(mediaTitle);
+        info.appendChild(a);
         info.appendChild(mediaLikes);
 
         return info;

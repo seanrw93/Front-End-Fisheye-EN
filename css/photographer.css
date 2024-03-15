@@ -127,6 +127,10 @@ form textarea {
     border-radius: 5px;
 }
 
+.media-info a {
+    text-decoration: none;
+}
+
 .media-info {
     display: flex;
     justify-content: space-between;
