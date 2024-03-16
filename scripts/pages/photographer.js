@@ -26,6 +26,11 @@ async function displayMedia(media) {
     return mediaDOM;
 }
 
+function displayModal(media) {
+    const mediaArray = Array.isArray(media) ? media : [media];
+    console.log(mediaArray.map((media) => media.image || media.video));
+}
+
 function sortBydate(media) {
     return media.sort((a, b) => new Date(a.date) - new Date(b.date));
 }
@@ -42,8 +47,17 @@ async function init() {
     const urlParams = new URLSearchParams(window.location.search);
     const id = Number(urlParams.get("id"));
     const media = await getMedia(id);
+
+    // Temporary test to display modal array upon loading page
+    displayModal(media);
+    //End test 
+
     if (media) {
-        media.forEach(displayMedia);
+        media.forEach(item => {
+            displayMedia(item);
+            // const mediaLinks = document.querySelectorAll('.media-container a');
+            // mediaLinks.forEach(m => m.addEventListener('click', () => displayModal(item)));
+        });
     }
 
     // Stock sort functions in object
@@ -64,8 +78,9 @@ async function init() {
         // Get sort function from object based on text content of "option"
         const sortFunction = sortFunctions[e.target.value];
         if (sortFunction) {
-            const sortedMedia =sortFunction(media);
+            const sortedMedia = sortFunction(media.slice());
             sortedMedia.forEach(displayMedia);
+            displayModal(sortedMedia);
         } else {
             media.forEach(displayMedia);
         }

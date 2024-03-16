@@ -22,7 +22,7 @@ function mediaFactory(data) {
 
     function createImg() {
         const a = document.createElement('a');
-        data.image && a.setAttribute("href", `assets/photographers/Photographers_Photos/${image}`);
+        data.image && a.setAttribute("href", "#");
         
         const img = document.createElement( 'img' );
         img.setAttribute("src", `assets/photographers/Photographers_Photos/${image}`);
