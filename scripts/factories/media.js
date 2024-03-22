@@ -23,6 +23,8 @@ function mediaFactory(data) {
     function createImg() {
         const a = document.createElement('a');
         data.image && a.setAttribute("href", "#");
+        a.setAttribute("role", "button");
+        a.setAttribute("aria-label", title);
         
         const img = document.createElement( 'img' );
         img.setAttribute("src", `assets/photographers/Photographers_Photos/${image}`);
@@ -38,7 +40,7 @@ function mediaFactory(data) {
         const vid = document.createElement( 'video' );
         vid.setAttribute("src", `assets/photographers/Photographers_Photos/${video}`);
         vid.setAttribute("alt", title);
-        vid.setAttribute("controls", true);
+        vid.removeAttribute("controls");
         vid.classList.add("media-video");
 
         mediaContainer.appendChild(vid);
@@ -50,11 +52,8 @@ function mediaFactory(data) {
         info.classList.add('media-info');
 
         const a = document.createElement('a');
-        const imageUrl = data.image ? `assets/photographers/Photographers_Photos/${data.image}` : null;
-        const videoUrl = data.video ? `assets/photographers/Photographers_Photos/${data.video}` : null;
-        const href = imageUrl || videoUrl;
-
-        href && a.setAttribute("href", href);
+        a.setAttribute("href", "#");
+        a.setAttribute("role", "button");
 
         const mediaTitle = document.createElement('h2');
         mediaTitle.textContent = title;
@@ -66,7 +65,7 @@ function mediaFactory(data) {
         const button = document.createElement('button');
         button.classList.add('likes-button');
         button.innerHTML = '<i class="far fa-heart"></i>';
-        button.setAttribute('aria-label', 'Like');
+        button.setAttribute('aria-label', 'Add/remove like');
 
         button.addEventListener('click', toggleLike);
         
