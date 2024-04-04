@@ -29,7 +29,10 @@ async function displayMedia(media) {
 //Create and launch light box modal
 let modal;
 let currentIndex;
+
 function createModal(media, clickedId, index) {
+    const clickedMedia = media.find(obj => obj.id === clickedId);
+
     if (!modal) {
         modal = document.createElement('dialog');
         modal.id = 'lightbox_modal';
@@ -42,10 +45,6 @@ function createModal(media, clickedId, index) {
     } else {
         modal.innerHTML = ""
     }
-
-    const clickedMedia = media.find(obj => obj.id === clickedId);
-
-    currentIndex = index;
 
     let mediaHTML = ""
 
@@ -86,19 +85,22 @@ function createModal(media, clickedId, index) {
             </footer>
     `   
 
-        modal.querySelector('.previous_button').addEventListener('click', () => showPreviousMedia(media));
-        modal.querySelector('.next_button').addEventListener('click', () => showNextMedia(media));
+        currentIndex = index;
+        const prevButton = modal.querySelector('.previous_button');
+        const nextButton = modal.querySelector('.next_button');
+        prevButton.addEventListener('click', () => showPreviousMedia(media));
+        nextButton.addEventListener('click', () => showNextMedia(media));
 
-        if (modal) {
-            document.addEventListener('keydown', e => {
-                if (e.key === 'ArrowLeft') {
-                    showPreviousMedia(media);
-                } else if (e.key === 'ArrowRight') {
-                    showNextMedia(media);
-                }
-            });
-    
-        }
+        // if (modal) {
+        //     document.addEventListener('keydown', e => {
+        //         if (e.key === 'ArrowLeft') {
+        //             prevButton.click()
+        //         } else if (e.key === 'ArrowRight') {
+        //             nextButton.click()
+        //         }
+        //     });
+        // }
+
         function showNextMedia(media) {
             if (currentIndex > media.length - 1) {
                 return
@@ -219,7 +221,6 @@ async function init() {
         // Update event listeners after sorting
         updateEventListeners(sortedMedia);
     })
-
     // Await displayMedia to finish before updating event listeners
     await displayMedia(sortedMedia);
         
