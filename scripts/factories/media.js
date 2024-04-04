@@ -1,8 +1,11 @@
 function mediaFactory(data) {
-    const { image, video, title, likes } = data;
+    const { id, image, video, title, likes } = data;
 
     const mediaContainer = document.createElement('div');
     mediaContainer.classList.add('media-container');
+    mediaContainer.setAttribute('role', 'button');
+    mediaContainer.setAttribute('aria-label', `View ${title} and media album modal`);
+
 
     // Function to toggle like button
     function toggleLike(e) {
@@ -21,18 +24,13 @@ function mediaFactory(data) {
     }
 
     function createImg() {
-        const a = document.createElement('a');
-        data.image && a.setAttribute("href", "#");
-        a.setAttribute("role", "button");
-        a.setAttribute("aria-label", title);
-        
         const img = document.createElement( 'img' );
         img.setAttribute("src", `assets/photographers/Photographers_Photos/${image}`);
         img.setAttribute("alt", title);
         img.classList.add("media-image");
+        img.id = id
 
-        a.appendChild(img);
-        mediaContainer.appendChild(a);
+        mediaContainer.appendChild(img);
         return mediaContainer;
     }
 
@@ -42,6 +40,7 @@ function mediaFactory(data) {
         vid.setAttribute("alt", title);
         vid.removeAttribute("controls");
         vid.classList.add("media-video");
+        vid.id = id
 
         mediaContainer.appendChild(vid);
         return mediaContainer;
@@ -51,9 +50,8 @@ function mediaFactory(data) {
         const info = document.createElement('div');
         info.classList.add('media-info');
 
-        const a = document.createElement('a');
-        a.setAttribute("href", "#");
-        a.setAttribute("role", "button");
+        const div = document.createElement('div');
+        div.setAttribute("role", "button");
 
         const mediaTitle = document.createElement('h2');
         mediaTitle.textContent = title;
@@ -78,8 +76,8 @@ function mediaFactory(data) {
         likesCount.setAttribute('aria-live', 'polite');
         mediaLikes.appendChild(likesCount);
 
-        a.appendChild(mediaTitle);
-        info.appendChild(a);
+        div.appendChild(mediaTitle);
+        info.appendChild(div);
         info.appendChild(mediaLikes);
 
         return info;
@@ -103,5 +101,5 @@ function mediaFactory(data) {
         return { mediaDiv };
     }
 
-    return { image, video, title, likes, getMediaDOM }
+    return { image, video, title, likes, id, getMediaDOM }
 }

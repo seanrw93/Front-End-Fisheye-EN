@@ -1,9 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
+// document.addEventListener('DOMContentLoaded', () => {
 
-    const modal = document.querySelector("#contact_modal");
-    const form = modal.querySelector("form");
+    let contactModal = document.querySelector("#contact_modal");
+    let lightBoxModal = document.querySelector("#lightbox_modal");
+    const form = contactModal.querySelector("form");
 
-    function displayModal() {
+    function showModal(modal) {
         document.body.style.overflow = "hidden";
         
         modal.style.display = "flex";
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.showModal();
     }
     
-    function closeModal() {
+    function closeModal(modal) {
         document.body.style.overflow = "auto";
 
         modal.style.display = "none";
@@ -24,10 +25,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     const contactButton = document.querySelector(".contact_button");
+    console.log(contactButton)
+    
     const closeButton = document.querySelector(".close_button");
 
-    contactButton.addEventListener("click", () => displayModal());
-    closeButton.addEventListener("click", () => closeModal());
+    contactButton.addEventListener("click", () => showModal(contactModal));
+    closeButton.addEventListener("click", () => {
+        closeModal(contactModal);
+
+    });    
 
     class FormData {
         constructor() {
@@ -71,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener("submit", (event) => {
         event.preventDefault();
         console.log(getFormData());
-        closeModal();
+        closeModal(contactModal);
     });
 
-});
+// });

@@ -113,6 +113,7 @@ form textarea {
 }
 
 .media-container{
+    position: relative;
     width: 100%;
     max-width: 342px;
     aspect-ratio: 10 / 9;
@@ -154,11 +155,15 @@ form textarea {
 
 .media-likes {
     display: flex;
+    position: relative;
     font-weight: 500;
     flex-wrap: nowrap;
 }
 
 .likes-button {
+    position: absolute;
+    right: 2em;
+
     background: transparent;
     color: #901C1C;
     border: none;
@@ -206,6 +211,15 @@ form textarea {
 }
 #sort option {
     font-family: DM Sans, sans-serif;
+}
+
+#lightbox_modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%;
+    height: 90%;
+    background-color: white;
 }
 
 @media screen and (max-width: 35em) {
@@ -271,4 +285,58 @@ form textarea {
         max-width: 350px;
         margin: 20px auto;
     }
+}
+
+#lightbox_modal .close_button{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+#lightbox_modal .close_button path {
+    fill: #901C1C;
+}
+
+
+.lightbox-media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    max-width: 60%;
+}
+
+.lightbox-media img, .lightbox-media video{
+    max-height: 90vh;
+    height: auto;
+    width: auto;
+}
+
+.media-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.media-navigation button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 3rem;
+    color: #901C1C;
+    height: 50px;
+    width: 20px;
+}
+
+.media-container::before:has(> video) {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #FFF;
+    width: 60px;
+    height: 60px;
+    z-index: 5;
 }

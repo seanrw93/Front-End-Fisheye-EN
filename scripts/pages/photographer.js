@@ -26,17 +26,138 @@ async function displayMedia(media) {
     return mediaDOM;
 }
 
-//Launch light box modal
-function displayModal(media) {
-    const foo = getMediaUrl(media);
-    console.log(foo);
+//Create and launch light box modal
+let modal;
+let currentIndex;
+function createModal(media, clickedId, index) {
+    if (!modal) {
+        modal = document.createElement('dialog');
+        modal.id = 'lightbox_modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-labelledby', 'dialog_label');
+        modal.setAttribute('aria-hidden', 'true');
+        modal.setAttribute('tabindex', '-1');    
+        document.body.style.overflow = "hidden"
+
+    } else {
+        modal.innerHTML = ""
+    }
+
+    const clickedMedia = media.find(obj => obj.id === clickedId);
+
+    currentIndex = index;
+
+    let mediaHTML = ""
+
+    if (clickedMedia.image) {
+        mediaHTML = `
+            <img src="assets/photographers/Photographers_Photos/${clickedMedia.image}" alt="${clickedMedia.title}" />
+        `;
+    } 
+    // Check if current media is a video (if applicable)
+    else if (clickedMedia.video) {
+        mediaHTML = `
+            <video src="assets/photographers/Photographers_Photos/${clickedMedia.video}" alt="${clickedMedia.title}" controls></video>
+        `;
+    }
+
+
+    modal.innerHTML = `
+            <button class="close_button" tabindex="0" aria-label="Close">
+            <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M42 4.23L37.77 0L21 16.77L4.23 0L0 4.23L16.77 21L0 37.77L4.23 42L21 25.23L37.77 42L42 37.77L25.23 21L42 4.23Z" fill="white"/>
+            </svg>
+            </button>
+            <main>
+                <div class="media-navigation">
+                    <button class="previous_button" aria-label="Previous media">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <div class="lightbox-media">
+                        ${mediaHTML}
+                    </div>
+                    <button class="next_button" aria-label="Next media">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </main>
+            <footer>
+                <div class="media-title"></div>
+            </footer>
+    `   
+
+        modal.querySelector('.previous_button').addEventListener('click', () => showPreviousMedia(media));
+        modal.querySelector('.next_button').addEventListener('click', () => showNextMedia(media));
+
+        if (modal) {
+            document.addEventListener('keydown', e => {
+                if (e.key === 'ArrowLeft') {
+                    showPreviousMedia(media);
+                } else if (e.key === 'ArrowRight') {
+                    showNextMedia(media);
+                }
+            });
+    
+        }
+        function showNextMedia(media) {
+            if (currentIndex > media.length - 1) {
+                return
+            } else {
+                currentIndex++
+            }
+
+            updateMedia(media[currentIndex]);
+        }
+
+        function showPreviousMedia(media) {
+            if (currentIndex <= 0) {
+                return
+            } else {
+                currentIndex--
+            }
+
+            updateMedia(media[currentIndex]);
+        }
+
+        function updateMedia(updatedMedia) {
+            let mediaHTML = document.querySelector(".lightbox-media")
+
+            if (updatedMedia.image) {
+                mediaHTML.innerHTML = `
+                    <img src="assets/photographers/Photographers_Photos/${updatedMedia.image}" alt="${updatedMedia.title}" />
+                `;
+            } 
+            // Check if current media is a video (if applicable)
+            else if (updatedMedia.video) {
+                mediaHTML.innerHTML = `
+                    <video src="assets/photographers/Photographers_Photos/${updatedMedia.video}" alt="${updatedMedia.title}" controls></video>
+                `;
+            }
+
+            return mediaHTML;
+            
+        }
+
+    // Event listener for modal close
+    modal.querySelector('.close_button').addEventListener('click', () => {
+        modal.close();
+        modal.setAttribute('aria-hidden', 'true'); // Set aria-hidden to true when closed
+        document.body.style.overflow = "auto"
+    });
+
+    document.body.appendChild(modal);
+    return modal;
 }
 
-//Map media to return array of media urls
-function getMediaUrl(media) {
-    const mediaArray = Array.isArray(media) ? media : [media];
-    const mappedMedia = mediaArray.map((media) => media.image || media.video);
-    return mappedMedia;
+
+function displayModal(modal) {
+    if (!modal) {
+        console.error("Modal element not found.");
+        return;
+    }
+    modal.setAttribute('aria-hidden', 'false');
+    modal.showModal();    
+
 }
 
 function sortByDate(media) {
@@ -108,15 +229,19 @@ async function init() {
         const mediaContainerLinks = document.querySelectorAll('.media-container');
 
         // Add event listener to each media container
-        mediaContainerLinks.forEach((link, index) => link.addEventListener('click', () => {
-            const clickedMedia = sortedMedia[index];
-            displayModal(sortedMedia);
-            if (clickedMedia) {
-                displayModal(clickedMedia);
-            } else {
-                console.error("Clicked media not found.");
-            }
-        }));
+        mediaContainerLinks.forEach((container, index) => {
+            const openModalBtn = container.firstElementChild;
+            openModalBtn.addEventListener('click', e => {
+                e.preventDefault();
+                if (openModalBtn) {
+                    const id = Number(e.target.id);
+                    const modal = createModal(sortedMedia, id, index);
+                    displayModal(modal);
+                } else {
+                    console.error("Media not found.");
+                }
+            })
+        });
     }
 }
 
