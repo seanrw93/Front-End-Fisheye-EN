@@ -195,7 +195,6 @@ async function init() {
 
     //Sort by date by default
     sortedMedia = sortFunctions.date(media.slice());
-    getMediaUrl(sortedMedia);
 
     // Initial event listener setup
     updateEventListeners(sortedMedia);
@@ -213,7 +212,6 @@ async function init() {
         if (sortFunction) {
             sortedMedia = sortFunction(media.slice());
             sortedMedia.forEach(displayMedia);
-            getMediaUrl(sortedMedia);
         } else {
             media.forEach(displayMedia);
         }
