@@ -28,10 +28,9 @@ async function displayMedia(media) {
 
 //Create and launch light box modal
 let modal;
-let currentIndex;
-
-function createModal(media, clickedId, index) {
+function createModal(media, clickedId) {
     const clickedMedia = media.find(obj => obj.id === clickedId);
+    let currentIndex = media.indexOf(clickedMedia)
 
     if (!modal) {
         modal = document.createElement('dialog');
@@ -84,22 +83,20 @@ function createModal(media, clickedId, index) {
                 <div class="media-title"></div>
             </footer>
     `   
-
-        currentIndex = index;
         const prevButton = modal.querySelector('.previous_button');
         const nextButton = modal.querySelector('.next_button');
         prevButton.addEventListener('click', () => showPreviousMedia(media));
         nextButton.addEventListener('click', () => showNextMedia(media));
 
-        // if (modal) {
-        //     document.addEventListener('keydown', e => {
-        //         if (e.key === 'ArrowLeft') {
-        //             prevButton.click()
-        //         } else if (e.key === 'ArrowRight') {
-        //             nextButton.click()
-        //         }
-        //     });
-        // }
+        if (modal) {
+            document.addEventListener('keydown', e => {
+                if (e.key === 'ArrowLeft') {
+                    prevButton.click()
+                } else if (e.key === 'ArrowRight') {
+                    nextButton.click()
+                }
+            });
+        }
 
         function showNextMedia(media) {
             if (currentIndex > media.length - 1) {
@@ -225,21 +222,25 @@ async function init() {
     await displayMedia(sortedMedia);
         
     function updateEventListeners(sortedMedia) {
-        const mediaContainerLinks = document.querySelectorAll('.media-container');
+        const mediaElements = document.querySelectorAll('.media-element');
+
+        function handleModalCreation(elem) {
+            if (elem) {
+                const id = Number(elem.id);
+                const modal = createModal(sortedMedia, id);
+                displayModal(modal);
+            }
+        }
 
         // Add event listener to each media container
-        mediaContainerLinks.forEach((container, index) => {
-            const openModalBtn = container.firstElementChild;
-            openModalBtn.addEventListener('click', e => {
-                e.preventDefault();
-                if (openModalBtn) {
-                    const id = Number(e.target.id);
-                    const modal = createModal(sortedMedia, id, index);
-                    displayModal(modal);
-                } else {
-                    console.error("Media not found.");
+        mediaElements.forEach(elem => {
+            elem.addEventListener('click', () => handleModalCreation(elem));
+            elem.addEventListener('keydown', e => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleModalCreation(elem);
                 }
-            })
+            });
         });
     }
 }

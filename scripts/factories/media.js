@@ -3,8 +3,6 @@ function mediaFactory(data) {
 
     const mediaContainer = document.createElement('div');
     mediaContainer.classList.add('media-container');
-    mediaContainer.setAttribute('role', 'button');
-    mediaContainer.setAttribute('aria-label', `View ${title} and media album modal`);
 
 
     // Function to toggle like button
@@ -14,35 +12,38 @@ function mediaFactory(data) {
         if (e.currentTarget.classList.contains('liked')) {
             e.currentTarget.classList.remove('liked');
             e.currentTarget.innerHTML = '<i class="far fa-heart"></i>';
+            e.currentTarget.setAttribute("aria-label", `${title} unliked`)
             counter--;
         } else {
             e.currentTarget.classList.add('liked');
             e.currentTarget.innerHTML = '<i class="fas fa-heart"></i>';
+            e.currentTarget.setAttribute("aria-label", `${title} liked`)
             counter++;
         }
         likesCounter.textContent = counter;
     }
 
-    function createImg() {
-        const img = document.createElement( 'img' );
-        img.setAttribute("src", `assets/photographers/Photographers_Photos/${image}`);
-        img.setAttribute("alt", title);
-        img.classList.add("media-image");
-        img.id = id
+    function createMedia() {
+        let media;
+        if (image) {
+            media = document.createElement("img");
+            media.setAttribute("src", `assets/photographers/Photographers_Photos/${image}`);
+            media.classList.add("media-image");
+        } else if (video) {
+            media = document.createElement("video");
+            media.setAttribute("src", `assets/photographers/Photographers_Photos/${video}`);
+            media.classList.add("media-video");
+            media.removeAttribute("controls");
+        }
+        
+        media.setAttribute("alt", title);
+        media.setAttribute("role", "link");
+        media.setAttribute("tabindex", "0");
+        media.classList.add("media-element");
+        media.setAttribute('aria-label', `View ${title} image and media album modal`);
+        media.id = id
 
-        mediaContainer.appendChild(img);
-        return mediaContainer;
-    }
-
-    function createVideo() {
-        const vid = document.createElement( 'video' );
-        vid.setAttribute("src", `assets/photographers/Photographers_Photos/${video}`);
-        vid.setAttribute("alt", title);
-        vid.removeAttribute("controls");
-        vid.classList.add("media-video");
-        vid.id = id
-
-        mediaContainer.appendChild(vid);
+        mediaContainer.appendChild(media);
         return mediaContainer;
     }
 
@@ -63,7 +64,7 @@ function mediaFactory(data) {
         const button = document.createElement('button');
         button.classList.add('likes-button');
         button.innerHTML = '<i class="far fa-heart"></i>';
-        button.setAttribute('aria-label', 'Add/remove like');
+        button.setAttribute('title', 'Like button');
 
         button.addEventListener('click', toggleLike);
         
@@ -85,15 +86,9 @@ function mediaFactory(data) {
 
     function getMediaDOM() {
         let mediaDiv = document.querySelector(".media-section");
-        if (image) {
-            const img = createImg();
-            mediaDiv.appendChild(img);
-        }
 
-        if (video) {
-            const video = createVideo();
-            mediaDiv.appendChild(video);
-        }
+        const media = createMedia()
+        mediaDiv.appendChild(media);
 
         const info = createInfo();
         mediaContainer.appendChild(info);
