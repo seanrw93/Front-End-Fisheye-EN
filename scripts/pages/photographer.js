@@ -29,120 +29,121 @@ async function displayMedia(media) {
 //Create and launch light box modal
 let modal;
 function createModal(media, clickedId) {
-    const clickedMedia = media.find(obj => obj.id === clickedId);
-    let currentIndex = media.indexOf(clickedMedia)
+    modal = document.querySelector("#lightbox_modal");
+    const closeButton = modal.querySelector('.close_button');
+    const prevButton = modal.querySelector('.previous_button');
+    const nextButton = modal.querySelector('.next_button');
 
-    if (!modal) {
-        modal = document.createElement('dialog');
-        modal.id = 'lightbox_modal';
-        modal.setAttribute('role', 'dialog');
-        modal.setAttribute('aria-labelledby', 'dialog_label');
-        modal.setAttribute('aria-hidden', 'true');
-        modal.setAttribute('tabindex', '-1');    
-        document.body.style.overflow = "hidden"
+    let currentIndex = media.find(obj => obj.id === clickedId);
+    
+    document.querySelector("body > main").style.pointerEvents = "none"
+    document.body.style.overflow = "hidden"
+    modal.setAttribute('aria-hidden', 'false');
+    modal.setAttribute('aria-modal', 'true');
 
-    } else {
-        modal.innerHTML = ""
+    // Remove event listeners from previous and next buttons
+    function removeEventListeners() {
+        prevButton.removeEventListener('click', showPreviousMedia);
+        nextButton.removeEventListener('click', showNextMedia);
+        modal.removeEventListener('keydown', handleKeyDown);
     }
 
-    let mediaHTML = ""
-
-    if (clickedMedia.image) {
-        mediaHTML = `
-            <img src="assets/photographers/Photographers_Photos/${clickedMedia.image}" alt="${clickedMedia.title}" />
-        `;
-    } 
-    // Check if current media is a video (if applicable)
-    else if (clickedMedia.video) {
-        mediaHTML = `
-            <video src="assets/photographers/Photographers_Photos/${clickedMedia.video}" alt="${clickedMedia.title}" controls></video>
-        `;
+    // Remove existing event listeners before adding new ones
+    closeButton.addEventListener('click', removeEventListeners);
+    modal && modal.addEventListener('keydown', e => modal && e.key === 'Escape' && removeEventListeners());
+    
+    const setPreviousId = (index) => {
+        if (index === 0) {
+            prevButton.dataset.previousId = ""
+        } else { 
+            const newIndex = index - 1;
+            prevButton.dataset.previousId = media[newIndex].id
+        }
     }
 
+    const setNextId = (index) => {
+        if (index === media.length - 1) {
+            nextButton.dataset.nextId = ""
+        } else {
+            const newIndex = index + 1;
+            nextButton.dataset.nextId = media[newIndex].id
+        }
+    }
 
-    modal.innerHTML = `
-            <button class="close_button" tabindex="0" aria-label="Close">
-            <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M42 4.23L37.77 0L21 16.77L4.23 0L0 4.23L16.77 21L0 37.77L4.23 42L21 25.23L37.77 42L42 37.77L25.23 21L42 4.23Z" fill="white"/>
-            </svg>
-            </button>
-            <main>
-                <div class="media-navigation">
-                    <button class="previous_button" aria-label="Previous media">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    <div class="lightbox-media">
-                        ${mediaHTML}
-                    </div>
-                    <button class="next_button" aria-label="Next media">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </div>
-            </main>
-            <footer>
-                <div class="media-title"></div>
-            </footer>
-    `   
-        const prevButton = modal.querySelector('.previous_button');
-        const nextButton = modal.querySelector('.next_button');
-        prevButton.addEventListener('click', () => showPreviousMedia(media));
-        nextButton.addEventListener('click', () => showNextMedia(media));
+    let mediaContainer = document.querySelector(".lightbox-media");
 
-        if (modal) {
-            document.addEventListener('keydown', e => {
-                if (e.key === 'ArrowLeft') {
-                    prevButton.click()
-                } else if (e.key === 'ArrowRight') {
-                    nextButton.click()
-                }
-            });
+    function showMedia(mediaId) {
+        const currentMedia = media.find(obj => obj.id === Number(mediaId));
+        currentIndex = media.indexOf(currentMedia)
+        if (currentMedia.image) {
+            mediaContainer.innerHTML = `
+                <figure>
+                    <img src="assets/photographers/Photographers_Photos/${currentMedia.image}" 
+                    alt="${currentMedia.title}" 
+                    tabindex="0" />
+                    <figcaption>${currentMedia.title}</figcaption>
+                </figure>
+            `;
+        } else if (currentMedia.video) {
+            mediaContainer.innerHTML = `
+                <figure>
+                    <video src="assets/photographers/Photographers_Photos/${currentMedia.video}" 
+                    alt="${currentMedia.title}" 
+                    tabindex="0"
+                    controls></video>
+                    <figcaption>${currentMedia.title}</figcaption>
+                <figure>
+            `;
         }
 
-        function showNextMedia(media) {
-            if (currentIndex > media.length - 1) {
-                return
-            } else {
-                currentIndex++
-            }
+        setPreviousId(currentIndex);
+        setNextId(currentIndex);
+    }
 
-            updateMedia(media[currentIndex]);
+    showMedia(clickedId);
+
+    if (modal) {
+        prevButton.addEventListener('click', showPreviousMedia);
+        nextButton.addEventListener('click', showNextMedia);
+        modal.addEventListener('keydown', handleKeyDown);
+    }
+    
+    function handleKeyDown(e) {
+        if (e.key === 'ArrowLeft') {
+            showPreviousMedia();
+        } else if (e.key === 'ArrowRight') {
+            showNextMedia();
         }
+    }
+    
+    function showNextMedia() {
+        if (nextButton.dataset.nextId === "") {
+            return
+        } else {
+            showMedia(nextButton.dataset.nextId);
 
-        function showPreviousMedia(media) {
-            if (currentIndex <= 0) {
-                return
-            } else {
-                currentIndex--
-            }
-
-            updateMedia(media[currentIndex]);
         }
+    }
 
-        function updateMedia(updatedMedia) {
-            let mediaHTML = document.querySelector(".lightbox-media")
-
-            if (updatedMedia.image) {
-                mediaHTML.innerHTML = `
-                    <img src="assets/photographers/Photographers_Photos/${updatedMedia.image}" alt="${updatedMedia.title}" />
-                `;
-            } 
-            // Check if current media is a video (if applicable)
-            else if (updatedMedia.video) {
-                mediaHTML.innerHTML = `
-                    <video src="assets/photographers/Photographers_Photos/${updatedMedia.video}" alt="${updatedMedia.title}" controls></video>
-                `;
-            }
-
-            return mediaHTML;
-            
+    function showPreviousMedia() {
+        if (prevButton.dataset.previousId === "") {
+            return
+        } else {
+            showMedia(prevButton.dataset.previousId);
         }
-
-    // Event listener for modal close
-    modal.querySelector('.close_button').addEventListener('click', () => {
-        modal.close();
-        modal.setAttribute('aria-hidden', 'true'); // Set aria-hidden to true when closed
+    }
+    
+    function handleClose() {
+        document.querySelector("body > main").style.pointerEvents = "auto"
         document.body.style.overflow = "auto"
-    });
+        modal.setAttribute('aria-hidden', 'true');
+        modal.setAttribute('aria-modal', 'false');
+        modal.close();
+    }
+
+    // Event listeners for modal close
+    closeButton.addEventListener('click', handleClose);
+    modal && modal.addEventListener('keydown', e => modal && e.key === 'Escape' && handleClose());
 
     document.body.appendChild(modal);
     return modal;
@@ -234,7 +235,9 @@ async function init() {
 
         // Add event listener to each media container
         mediaElements.forEach(elem => {
-            elem.addEventListener('click', () => handleModalCreation(elem));
+            elem.addEventListener('click', () => {
+                handleModalCreation(elem)
+            });
             elem.addEventListener('keydown', e => {
                 if (e.key === 'Enter') {
                     e.preventDefault();

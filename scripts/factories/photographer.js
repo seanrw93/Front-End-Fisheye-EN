@@ -76,8 +76,9 @@ function photographerFactory(data) {
 
         const counterDiv = document.createElement('div');
         counterDiv.classList.add('total-counter');
-        counterDiv.setAttribute('role', 'status'); 
+      
         counterDiv.setAttribute('aria-live', 'polite');
+        counterDiv.setAttribute('aria-label', 'Total likes and price')
 
         const counter = document.createElement('span');
 
@@ -117,6 +118,7 @@ function photographerFactory(data) {
         //create link element 
         const link = document.createElement( 'a' );
         link.setAttribute("href", `./photographer.html?id=${data.id}`)
+        link.setAttribute("aria-label", `See ${name}'s portfolio`)
 
         const img = createImg();
 
@@ -142,7 +144,7 @@ function photographerFactory(data) {
 
         // Change title to photographer's name
         const title = document.querySelector("title");
-        title.textContent = `Fisheye - ${name}`;
+        title.textContent = `FishEye - ${name}`;
 
         // Create picture info elements
         const divInfo = document.querySelector(".photographer-info");
