@@ -323,8 +323,8 @@ form textarea {
 }
 
 .lightbox-media img, .lightbox-media video {
-    max-height: 700px;
-    max-width: 600px;
+    max-height: 70vh;
+    max-width: 60vw;
     margin-bottom: 1rem;
     object-fit: contain;
 }
