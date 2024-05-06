@@ -54,18 +54,22 @@ function createModal(media, clickedId) {
     
     const setPreviousId = (index) => {
         if (index === 0) {
+            prevButton.classList.add("disabled");
             prevButton.dataset.previousId = ""
         } else { 
             const newIndex = index - 1;
+            prevButton.classList.remove("disabled");
             prevButton.dataset.previousId = media[newIndex].id
         }
     }
 
     const setNextId = (index) => {
         if (index === media.length - 1) {
+            nextButton.classList.add("disabled");
             nextButton.dataset.nextId = ""
         } else {
             const newIndex = index + 1;
+            nextButton.classList.remove("disabled");
             nextButton.dataset.nextId = media[newIndex].id
         }
     }

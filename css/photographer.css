@@ -342,8 +342,12 @@ form textarea {
     cursor: pointer;
     font-size: 3rem;
     color: #901C1C;
-    height: 50px;
-    width: 20px;
+    margin: 0;
+}
+
+.media-navigation button.disabled {
+    opacity: 0.4;
+    pointer-events: none;
 }
 
 .media-container:has(> .media-video)::before {
