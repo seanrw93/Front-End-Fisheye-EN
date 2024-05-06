@@ -43,72 +43,7 @@ function photographerFactory(data) {
         pPrice.classList.add("photographer-price")
         return pPrice;
     }
-
-    //Create fixed counter element
-    function createFixedCounter() {
-        const likesCounter = document.querySelectorAll('.likes-counter');
-        const likesButton = document.querySelectorAll('.likes-button');
-
-        function updateTotalLikes() {
-            const totalLikes = Array.from(likesCounter).reduce((acc, like) => acc + parseInt(like.textContent), 0)
-
-            let totalCounter = Number(totalLikes)
-
-            likesButton.forEach(button => {
-                button.addEventListener('click', () => {
-                    likesCounter.forEach(like => {
-                        if (like.classList.contains('liked')) {
-                            totalCounter++;
-                            
-                        } else {
-                            totalCounter--;      
-                        }
-                    });
-                });
-            });
-
-            return totalCounter;
-        }
-
-        const container = document.createElement('div');
-        container.classList.add('fixed-counter');
-        container.setAttribute('role', 'contentinfo');
-
-        const counterDiv = document.createElement('div');
-        counterDiv.classList.add('total-counter');
-      
-        counterDiv.setAttribute('aria-live', 'polite');
-        counterDiv.setAttribute('aria-label', 'Total likes and price')
-
-        const counter = document.createElement('span');
-
-        //Initial total likes
-        counter.textContent = updateTotalLikes();
-
-        //Update total likes when a like button is clicked
-        likesButton.forEach(button => {
-            button.addEventListener('click', () => {
-                counter.textContent = updateTotalLikes();
-                counter.setAttribute('aria-label', `Total likes: ${counter.textContent}`);
-            });
-        });
-        counterDiv.appendChild(counter);
-
-        const i = document.createElement('i');
-        i.classList.add('fas', 'fa-heart');
-        counterDiv.appendChild(i);
-
-        const priceDiv = document.createElement('div');
-
-        const pricePerDay = document.createElement('span');
-        pricePerDay.textContent = `$${price}/day`;
-        priceDiv.appendChild(pricePerDay);
-
-        container.appendChild(counterDiv);
-        container.appendChild(priceDiv);
-
-        return container;
-    }
+    
 
     function getUserCardDOM() {
         //Create article element
@@ -162,13 +97,10 @@ function photographerFactory(data) {
         const img = createImg();
         divPicture.appendChild(img);
 
-        //Create fixed counter
-        const body = document.querySelector('body');
+        const spanPhotographerPrice = document.querySelector(".price-per-day");
+        spanPhotographerPrice.textContent = `$${price}/day`;
 
-        const divCounter = createFixedCounter();
-        body.appendChild(divCounter);
-
-        return { divInfo, divPicture, body };
+        return { divInfo, divPicture, spanPhotographerPrice };
     }
 
     //Return object with properties

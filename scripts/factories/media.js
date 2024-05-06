@@ -1,5 +1,5 @@
 function mediaFactory(data) {
-    const { id, image, video, title, likes } = data;
+    const { id, image, video, title, price, likes } = data;
 
     const mediaContainer = document.createElement('div');
     mediaContainer.classList.add('media-container');
@@ -84,17 +84,64 @@ function mediaFactory(data) {
         return info;
     }
 
-    function getMediaDOM() {
-        let mediaDiv = document.querySelector(".media-section");
+    //Create fixed counter element
+    function getTotalLikes() {
+        const likesCounter = document.querySelectorAll('.likes-counter');
+        const likesButton = document.querySelectorAll('.likes-button');
 
-        const media = createMedia()
-        mediaDiv.appendChild(media);
+        function updateTotalLikes() {
 
-        const info = createInfo();
-        mediaContainer.appendChild(info);
+            let totalCounter = 0;
+            const totalLikes = Array.from(likesCounter).reduce((acc, like) => acc + parseInt(like.textContent), 0)
 
-        return { mediaDiv };
+            totalCounter = Number(totalLikes)
+
+            likesButton.forEach(button => {
+                button.onclick = () => {
+                    likesCounter.forEach(like => {
+                        if (like.classList.contains('liked')) {
+                            totalCounter++;
+                        } else {
+                            totalCounter--;      
+                        }
+                    });
+                };
+            });
+
+            return totalCounter;
+        }
+
+        const counter = document.querySelector('.total-counter > span');
+
+        //Initial total likes
+        counter.textContent = updateTotalLikes();
+
+        //Update total likes when a like button is clicked
+        likesButton.forEach(button => {
+            button.addEventListener('click', () => {
+                counter.textContent = updateTotalLikes();
+                counter.setAttribute('aria-label', `Total likes: ${counter.textContent}`);
+            });
+        });
     }
 
-    return { image, video, title, likes, id, getMediaDOM }
+    function getMediaDOM() {
+        const mediaDiv = document.querySelector(".media-section");
+    
+        const media = createMedia();
+        mediaDiv.appendChild(media);
+    
+        const info = createInfo();
+        mediaContainer.appendChild(info);
+    
+        // Create fixed counter
+        const divCounter = getTotalLikes();
+        const body = document.querySelector('body');
+        body.appendChild(divCounter);
+    
+        return { mediaDiv, body };
+    }
+    
+
+    return { image, video, title, likes, price, id, getMediaDOM }
 }
