@@ -1,3 +1,5 @@
+import { PhotographerFactory } from "../factories/photographer.js";
+
 async function getPhotographers(id = null) {
     try {
         const response = await fetch("./data/photographers.json");
@@ -20,16 +22,19 @@ async function getPhotographers(id = null) {
     } 
 }
 
-    async function displayData(photographer) {
-        if (window.location.pathname.includes('index.html')) {
-            const photographersSection = document.querySelector(".photographer_section");
-            const userCardDOM = photographerFactory(photographer).getUserCardDOM();
-            photographersSection.appendChild(userCardDOM);
-        } else if (window.location.pathname.includes('photographer.html')) {
-            const headerCardDOM = photographerFactory(photographer).getPhotographerPageDOM();
-            return headerCardDOM;
-        };
-    };
+async function displayData(photographer) {
+    const photographerFactory = new PhotographerFactory(photographer);
+
+    if (window.location.pathname.includes('index.html')) {
+        const photographersSection = document.querySelector(".photographer_section");
+        const userCardDOM = photographerFactory.getUserCardDOM();
+        photographersSection.appendChild(userCardDOM);
+    } else if (window.location.pathname.includes('photographer.html')) {
+        const headerCardDOM = photographerFactory.getPhotographerPageDOM();
+        return headerCardDOM;
+    }
+}
+
 
 
     async function init() {
@@ -53,5 +58,3 @@ async function getPhotographers(id = null) {
     };
     
 init();
-
-    

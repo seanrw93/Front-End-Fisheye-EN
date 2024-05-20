@@ -1,6 +1,8 @@
+import { MediaFactory } from "../factories/media.js";
+
 async function getMedia(id) {
     try {
-        const response = await fetch("./data/photographers.json")
+        const response = await fetch("../data/photographers.json");
         if (!response.ok) {
             throw new Error("HTTP error " + response.status);
         }
@@ -13,42 +15,58 @@ async function getMedia(id) {
             return media;
         } else {
             return data.media;
-        } 
-    }
-    catch (e) {
+        }
+    } catch (e) {
         console.log("Failed to fetch media data: ", e);
         return null;
     }
 }
 
 async function displayMedia(media) {
-    const mediaDOM = mediaFactory(media).getMediaDOM();
-    return mediaDOM;
+    const mediaSection = document.querySelector(".media-section");
+    mediaSection.innerHTML = ''; // Clear previous media
+
+    media.forEach(item => {
+        const mediaFactory = new MediaFactory(item);
+        const mediaDOM = mediaFactory.getMediaDOM(); // Append mediaDOM to the container
+        mediaSection.appendChild(mediaDOM); // Append container to the media section
+    });
 }
 
-//Create and launch light box modal
-let modal;
+
 function createModal(media, clickedId) {
+    let modal;
+
+    if (!modal) {
+        modal = document.querySelector("#lightbox_modal");
+        // Add event listeners only once when modal is created
+        const closeButton = modal.querySelector('.close_button');
+        closeButton.addEventListener('click', handleClose);
+        modal.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                handleClose();
+            }
+        });
+    }
+
     modal = document.querySelector("#lightbox_modal");
     const closeButton = modal.querySelector('.close_button');
     const prevButton = modal.querySelector('.previous_button');
     const nextButton = modal.querySelector('.next_button');
 
-    let currentIndex = media.find(obj => obj.id === clickedId);
+    let currentIndex = media.findIndex(obj => obj.id === clickedId);
     
     document.querySelector("body > main").style.pointerEvents = "none"
     document.body.style.overflow = "hidden"
     modal.setAttribute('aria-hidden', 'false');
     modal.setAttribute('aria-modal', 'true');
 
-    // Remove event listeners from previous and next buttons
     function removeEventListeners() {
         prevButton.removeEventListener('click', showPreviousMedia);
         nextButton.removeEventListener('click', showNextMedia);
         modal.removeEventListener('keydown', handleKeyDown);
     }
 
-    // Remove existing event listeners before adding new ones
     closeButton.addEventListener('click', removeEventListeners);
     modal && modal.addEventListener('keydown', e => modal && e.key === 'Escape' && removeEventListeners());
     
@@ -125,7 +143,6 @@ function createModal(media, clickedId) {
             return
         } else {
             showMedia(nextButton.dataset.nextId);
-
         }
     }
 
@@ -145,14 +162,12 @@ function createModal(media, clickedId) {
         modal.close();
     }
 
-    // Event listeners for modal close
     closeButton.addEventListener('click', handleClose);
     modal && modal.addEventListener('keydown', e => modal && e.key === 'Escape' && handleClose());
 
     document.body.appendChild(modal);
     return modal;
 }
-
 
 function displayModal(modal) {
     if (!modal) {
@@ -161,7 +176,6 @@ function displayModal(modal) {
     }
     modal.setAttribute('aria-hidden', 'false');
     modal.showModal();    
-
 }
 
 function sortByDate(media) {
@@ -177,79 +191,63 @@ function sortedByTitle(media) {
 }
 
 async function init() {
-    let sortedMedia;
     const urlParams = new URLSearchParams(window.location.search);
     const id = Number(urlParams.get("id"));
+
     const media = await getMedia(id);
+    let sortedByDateMedia = sortByDate(media);
 
-    // Sort media by date on loading the page
-    let sortedByDateMedia = sortByDate(media); // Sort media by date
-    if (sortedByDateMedia) {
-        sortedByDateMedia.forEach(item => {
-            displayMedia(item); // Display each sorted media item
-        });
-    }
+    await displayMedia(sortedByDateMedia);
 
-    //Stock sort functions in object
     const sortFunctions = {
-        date: sortByDate,
-        popularity: sortedByLikes,
-        title: sortedByTitle
-    }
+        "date": sortByDate,
+        "popularity": sortedByLikes,
+        "title": sortedByTitle
+    };
 
-    //Sort by date by default
-    sortedMedia = sortFunctions.date(media.slice());
+    let sortedMedia = sortFunctions["date"](media.slice());
 
-    // Initial event listener setup
-    updateEventListeners(sortedMedia);
-    
-    // Sort media onchange sort select
     const sort = document.querySelector('#sort');
-    sort.addEventListener('change', e => {
-
-        // Clear media container before sorting
+    sort.addEventListener('change', async (e) => {
         const mediaContainer = document.querySelector('.media-section');
-        mediaContainer.innerHTML = '';
+        mediaContainer.innerHTML = ''; // Clear previous media
 
-        // Get sort function from object based on text content of "option"
         const sortFunction = sortFunctions[e.target.value];
         if (sortFunction) {
             sortedMedia = sortFunction(media.slice());
-            sortedMedia.forEach(displayMedia);
         } else {
-            media.forEach(displayMedia);
+            sortedMedia = media;
         }
 
-        // Update event listeners after sorting
+        await displayMedia(sortedMedia);
         updateEventListeners(sortedMedia);
-    })
-    // Await displayMedia to finish before updating event listeners
-    await displayMedia(sortedMedia);
-        
-    function updateEventListeners(sortedMedia) {
-        const mediaElements = document.querySelectorAll('.media-element');
+    });
 
-        function handleModalCreation(elem) {
-            if (elem) {
-                const id = Number(elem.id);
-                const modal = createModal(sortedMedia, id);
-                displayModal(modal);
-            }
+    updateEventListeners(sortedMedia);
+}
+
+function updateEventListeners(sortedMedia) {
+    const mediaElements = document.querySelectorAll('.media-element');
+
+    function handleModalCreation(elem) {
+        if (elem) {
+            const id = Number(elem.id);
+            const modal = createModal(sortedMedia, id);
+            displayModal(modal);
         }
-
-        // Add event listener to each media container
-        mediaElements.forEach(elem => {
-            elem.addEventListener('click', () => {
-                handleModalCreation(elem)
-            });
-            elem.addEventListener('keydown', e => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    handleModalCreation(elem);
-                }
-            });
-        });
     }
+
+    mediaElements.forEach(elem => {
+        elem.addEventListener('click', () => {
+            handleModalCreation(elem);
+        });
+        elem.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleModalCreation(elem);
+            }
+        });
+    });
 }
 
 init();
