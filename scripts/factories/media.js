@@ -12,10 +12,12 @@ export class MediaFactory {
         this.price = price;
         this.likes = likes;
 
+        // Create a new div for the media container
         this.mediaContainer = document.createElement('div');
         this.mediaContainer.classList.add('media-container');
     }
 
+    // Method to toggle the like status of a media item
     toggleLike(e) {
         const likesCounter = e.currentTarget.nextElementSibling;
         let counter = Number(likesCounter.textContent);
@@ -33,6 +35,7 @@ export class MediaFactory {
         likesCounter.textContent = counter;
     }
 
+    // Method to create the media element (image or video)
     createMedia() {
         let media;
         if (this.image) {
@@ -57,6 +60,7 @@ export class MediaFactory {
         return this.mediaContainer;
     }
 
+    // Method to create the info element for a media item
     createInfo() {
         const info = document.createElement('div');
         info.classList.add('media-info');
@@ -93,6 +97,7 @@ export class MediaFactory {
         return info;
     }
 
+    // Method to calculate the total number of likes
     getTotalLikes() {
         const likesCounter = document.querySelectorAll('.likes-counter');
         const likesButton = document.querySelectorAll('.likes-button');
@@ -129,6 +134,7 @@ export class MediaFactory {
         });
     }
 
+    // Method to create the DOM structure for a media item
     getMediaDOM() {
         this.createMedia();
         const info = this.createInfo();

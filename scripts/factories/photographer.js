@@ -15,6 +15,7 @@ export class PhotographerFactory {
         this.price = price;
     }
 
+    // Method to create the image element for a photographer
     createImg() {
         const img = document.createElement('img');
         img.setAttribute("src", this.picture);
@@ -23,6 +24,7 @@ export class PhotographerFactory {
         return img;
     }
 
+    // Method to create the name element for a photographer
     createName() {
         const h2 = document.createElement('h2');
         h2.textContent = this.name;
@@ -30,6 +32,7 @@ export class PhotographerFactory {
         return h2;
     }
 
+    // Method to create the location element for a photographer
     createLocation() {
         const h3 = document.createElement('h3');
         h3.textContent = `${this.city}, ${this.country}`;
@@ -37,6 +40,7 @@ export class PhotographerFactory {
         return h3;
     }
 
+    // Method to create the tagline element for a photographer
     createTagline() {
         const pTagline = document.createElement('p');
         pTagline.textContent = this.tagline;
@@ -44,6 +48,7 @@ export class PhotographerFactory {
         return pTagline;
     }
 
+    // Method to create the price element for a photographer
     createPrice() {
         const pPrice = document.createElement('p');
         pPrice.textContent = `$${this.price}/day`;
@@ -51,6 +56,7 @@ export class PhotographerFactory {
         return pPrice;
     }
 
+    // Method to create the DOM structure for a photographer card 
     getUserCardDOM() {
         const article = document.createElement('article');
         article.setAttribute("role", "article");
@@ -71,6 +77,7 @@ export class PhotographerFactory {
         return article;
     }
 
+    // Method to create the DOM structure for a photographer page
     getPhotographerPageDOM() {
         const title = document.querySelector("title");
         title.textContent = `FishEye - ${this.name}`;
