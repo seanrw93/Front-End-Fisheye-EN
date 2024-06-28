@@ -3,7 +3,7 @@ import { PhotographerFactory } from "../factories/photographer.js";
 // Fetch photographers data from the server
 async function getPhotographers(id = null) {
     try {
-        const response = await fetch("./data/photographers.json");
+        const response = await fetch("../../data/photographers.json");
         if (!response.ok) {
             throw new Error("HTTP error " + response.status);
         }
