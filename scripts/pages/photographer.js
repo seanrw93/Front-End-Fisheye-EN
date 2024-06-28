@@ -3,7 +3,7 @@ import { MediaFactory } from "../factories/media.js";
 // Fetch media data from the server
 async function getMedia(id) {
     try {
-        const response = await fetch("../../data/photographers.json");
+        const response = await fetch("https://seanrw93.github.io/Front-End-Fisheye-EN/data/photographers.json");
         if (!response.ok) {
             throw new Error("HTTP error " + response.status);
         }
