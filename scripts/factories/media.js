@@ -1,53 +1,67 @@
-function mediaFactory(data) {
-    const { id, image, video, title, price, likes } = data;
+export class MediaFactory {
+    constructor(data) {
+        if (!data) {
+            throw new Error('Data is undefined');
+        }
 
-    const mediaContainer = document.createElement('div');
-    mediaContainer.classList.add('media-container');
+        const { id, image, video, title, price, likes } = data;
+        this.id = id;
+        this.image = image;
+        this.video = video;
+        this.title = title;
+        this.price = price;
+        this.likes = likes;
 
+        // Create a new div for the media container
+        this.mediaContainer = document.createElement('div');
+        this.mediaContainer.classList.add('media-container');
+    }
 
-    // Function to toggle like button
-    function toggleLike(e) {
+    // Method to toggle the like status of a media item
+    toggleLike(e) {
         const likesCounter = e.currentTarget.nextElementSibling;
         let counter = Number(likesCounter.textContent);
         if (e.currentTarget.classList.contains('liked')) {
             e.currentTarget.classList.remove('liked');
             e.currentTarget.innerHTML = '<i class="far fa-heart"></i>';
-            e.currentTarget.setAttribute("aria-label", `${title} unliked`)
+            e.currentTarget.setAttribute("aria-label", `${this.title} unliked`);
             counter--;
         } else {
             e.currentTarget.classList.add('liked');
             e.currentTarget.innerHTML = '<i class="fas fa-heart"></i>';
-            e.currentTarget.setAttribute("aria-label", `${title} liked`)
+            e.currentTarget.setAttribute("aria-label", `${this.title} liked`);
             counter++;
         }
         likesCounter.textContent = counter;
     }
 
-    function createMedia() {
+    // Method to create the media element (image or video)
+    createMedia() {
         let media;
-        if (image) {
+        if (this.image) {
             media = document.createElement("img");
-            media.setAttribute("src", `assets/photographers/Photographers_Photos/${image}`);
+            media.setAttribute("src", `assets/photographers/Photographers_Photos/${this.image}`);
             media.classList.add("media-image");
-        } else if (video) {
+        } else if (this.video) {
             media = document.createElement("video");
-            media.setAttribute("src", `assets/photographers/Photographers_Photos/${video}`);
+            media.setAttribute("src", `assets/photographers/Photographers_Photos/${this.video}`);
             media.classList.add("media-video");
             media.removeAttribute("controls");
         }
-        
-        media.setAttribute("alt", title);
+
+        media.setAttribute("alt", this.title);
         media.setAttribute("role", "link");
         media.setAttribute("tabindex", "0");
         media.classList.add("media-element");
-        media.setAttribute('aria-label', `View ${title} image and media album modal`);
-        media.id = id
+        media.setAttribute('aria-label', `View ${this.title} image and media album modal`);
+        media.id = this.id;
 
-        mediaContainer.appendChild(media);
-        return mediaContainer;
+        this.mediaContainer.appendChild(media);
+        return this.mediaContainer;
     }
 
-    function createInfo() {
+    // Method to create the info element for a media item
+    createInfo() {
         const info = document.createElement('div');
         info.classList.add('media-info');
 
@@ -55,7 +69,7 @@ function mediaFactory(data) {
         div.setAttribute("role", "button");
 
         const mediaTitle = document.createElement('h2');
-        mediaTitle.textContent = title;
+        mediaTitle.textContent = this.title;
         mediaTitle.classList.add('media-title');
 
         const mediaLikes = document.createElement('div');
@@ -66,14 +80,13 @@ function mediaFactory(data) {
         button.innerHTML = '<i class="far fa-heart"></i>';
         button.setAttribute('title', 'Like button');
 
-        button.addEventListener('click', toggleLike);
-        
+        button.addEventListener('click', this.toggleLike.bind(this));
+
         mediaLikes.appendChild(button);
 
         const likesCount = document.createElement('span');
-        button.classList.add('likes-button');
         likesCount.classList.add('likes-counter');
-        likesCount.textContent = likes;
+        likesCount.textContent = this.likes;
         likesCount.setAttribute('aria-live', 'polite');
         mediaLikes.appendChild(likesCount);
 
@@ -84,17 +97,15 @@ function mediaFactory(data) {
         return info;
     }
 
-    //Create fixed counter element
-    function getTotalLikes() {
+    // Method to calculate the total number of likes
+    getTotalLikes() {
         const likesCounter = document.querySelectorAll('.likes-counter');
         const likesButton = document.querySelectorAll('.likes-button');
 
         function updateTotalLikes() {
-
             let totalCounter = 0;
-            const totalLikes = Array.from(likesCounter).reduce((acc, like) => acc + parseInt(like.textContent), 0)
-
-            totalCounter = Number(totalLikes)
+            const totalLikes = Array.from(likesCounter).reduce((acc, like) => acc + parseInt(like.textContent), 0);
+            totalCounter = Number(totalLikes);
 
             likesButton.forEach(button => {
                 button.onclick = () => {
@@ -102,7 +113,7 @@ function mediaFactory(data) {
                         if (like.classList.contains('liked')) {
                             totalCounter++;
                         } else {
-                            totalCounter--;      
+                            totalCounter--;
                         }
                     });
                 };
@@ -111,12 +122,10 @@ function mediaFactory(data) {
             return totalCounter;
         }
 
-        const counter = document.querySelector('.total-counter > span');
+        let counter = document.querySelector('.total-counter > span');
 
-        //Initial total likes
         counter.textContent = updateTotalLikes();
 
-        //Update total likes when a like button is clicked
         likesButton.forEach(button => {
             button.addEventListener('click', () => {
                 counter.textContent = updateTotalLikes();
@@ -125,23 +134,12 @@ function mediaFactory(data) {
         });
     }
 
-    function getMediaDOM() {
-        const mediaDiv = document.querySelector(".media-section");
-    
-        const media = createMedia();
-        mediaDiv.appendChild(media);
-    
-        const info = createInfo();
-        mediaContainer.appendChild(info);
-    
-        // Create fixed counter
-        const divCounter = getTotalLikes();
-        const body = document.querySelector('body');
-        body.appendChild(divCounter);
-    
-        return { mediaDiv, body };
+    // Method to create the DOM structure for a media item
+    getMediaDOM() {
+        this.createMedia();
+        const info = this.createInfo();
+        this.mediaContainer.appendChild(info);
+        this.getTotalLikes();
+        return this.mediaContainer;
     }
-    
-
-    return { image, video, title, likes, price, id, getMediaDOM }
 }

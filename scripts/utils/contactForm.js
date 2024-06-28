@@ -1,8 +1,6 @@
 // document.addEventListener('DOMContentLoaded', () => {
 
     let contactModal = document.querySelector("#contact_modal");
-    let lightBoxModal = document.querySelector("#lightbox_modal");
-    // const mediaElem = document.querySelectorAll(".media-element");
     const form = contactModal.querySelector("form");
 
     function showModal(modal) {
@@ -27,7 +25,7 @@
         document.body.style.overflow = "auto";
         modal.close();
 
-        modal === contactModal && setTimeout(() => form.reset(), 0);
+       form.reset();
     }
     
     const contactButton = document.querySelector(".contact_button");
@@ -35,24 +33,30 @@
     
     const closeButton = document.querySelector(".close_button");
 
+    // Add event listeners to open and close the modal
     contactButton.addEventListener("click", () => showModal(contactModal));
-    // mediaElem.forEach(media => media.addEventListener("click", () => showModal(lightBoxModal)));
 
     closeButton.addEventListener("click", () => {
         if (contactModal)
             closeModal(contactModal);
-        else if (lightBoxModal)
-            closeModal(contactModal);
-    });    
+    });
+    contactModal.addEventListener("keydown", e => {
+        if (e.key === "Escape") {
+            closeButton.click();
+        }
+    });
 
+    // Class to handle form data
     class FormData {
         constructor() {
+            // Get the form fields
             this.firstName = document.querySelector("#firstName");
             this.lastName = document.querySelector("#lastName");
             this.email = document.querySelector("#email");
             this.message = document.querySelector("#message");
         }
 
+    // Getters to get the form field values
         get getFirstName() {
             return this.firstName.value.charAt(0).toUpperCase() + this.firstName.value.slice(1);
         }
@@ -69,6 +73,7 @@
             return this.message.value;
         }
 
+    // Method to convert the form data to JSON
         toJson() {
             return {
                 firstName: this.getFirstName,
@@ -79,6 +84,7 @@
         }
     }
 
+    // Get the form data as JSON
     function getFormData() {
         const formData = new FormData();
         return formData.toJson();
