@@ -38,12 +38,10 @@
     /* Hidden by default, otherwise display: flex */
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     position: fixed;
     border-radius: 5px;
     background-color: #DB8876;
     width: 40%;
-    height: auto;
     padding: 35px;
     overflow: hidden;
 }

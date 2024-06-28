@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
     <title></title>
@@ -44,7 +44,7 @@
     </div>
 
     <!-- Contact modal start-->
-    <dialog id="contact_modal" role="dialog" aria-labelledby="dialog_label" aria-hidden="true">
+    <dialog id="contact_modal" aria-labelledby="dialog_label" aria-hidden="true">
       <header>
         <h2 id="dialog_label">Contact me</h2>
         <button class="close_button" tabindex="0" aria-label="Close">
@@ -80,7 +80,7 @@
               <path d="M42 4.23L37.77 0L21 16.77L4.23 0L0 4.23L16.77 21L0 37.77L4.23 42L21 25.23L37.77 42L42 37.77L25.23 21L42 4.23Z" fill="white"/>
           </svg>
       </button>
-      <main>
+      <div role="main">
           <div class="media-navigation">
               <button class="previous_button" aria-label="Previous media" data-previous-id="">
                   <i class="fa-solid fa-chevron-left"></i>
@@ -90,18 +90,15 @@
                   <i class="fa-solid fa-chevron-right"></i>
               </button>
           </div>
-      </main>
+      </div>
       <footer>
           <div class="media-title"></div>
       </footer>
     </dialog>
     <!-- Lightbox modal end-->
 
-
-    <script src="./scripts/factories/photographer.js" async defer></script>
-    <script src="./scripts/factories/media.js" async defer></script>
-    <script src="./scripts/pages/photographer.js" async defer></script>
-    <script src="./scripts/pages/index.js" async defer></script>
+    <script type="module" src="./scripts/pages/photographer.js"></script>
+    <script type="module" src="./scripts/pages/index.js"></script>
     <script src="./scripts/utils/contactForm.js" async defer></script>
   </body>
 </html>

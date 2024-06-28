@@ -86,10 +86,14 @@ article .photographer-portrait:active {
 
 
 @media (max-width: 775px) {
-    .header {
+    body > header {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        margin-top: 15px;
+    }
+
+    header > h1 {
+        margin-right: 0;
     }
 
     .photographer_section {

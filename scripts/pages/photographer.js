@@ -1,10 +1,14 @@
+import { MediaFactory } from "../factories/media.js";
+
+// Fetch media data from the server
 async function getMedia(id) {
     try {
-        const response = await fetch("./data/photographers.json")
+        const response = await fetch("../data/photographers.json");
         if (!response.ok) {
             throw new Error("HTTP error " + response.status);
         }
         const data = await response.json();
+         // If an id is provided, filter the media data to only include media with that id
         if (id) {
             const media = data.media.filter((media) => media.photographerId === id);
             if (!media) {
@@ -13,42 +17,59 @@ async function getMedia(id) {
             return media;
         } else {
             return data.media;
-        } 
-    }
-    catch (e) {
+        }
+    } catch (e) {
         console.log("Failed to fetch media data: ", e);
         return null;
     }
 }
 
+// Display media on the page
 async function displayMedia(media) {
-    const mediaDOM = mediaFactory(media).getMediaDOM();
-    return mediaDOM;
+    const mediaSection = document.querySelector(".media-section");
+    mediaSection.innerHTML = ''; 
+
+    media.forEach(item => {
+        const mediaFactory = new MediaFactory(item);
+        const mediaDOM = mediaFactory.getMediaDOM(); // Append mediaDOM to the container
+        mediaSection.appendChild(mediaDOM); // Append container to the media section
+    });
 }
 
-//Create and launch light box modal
-let modal;
+// Create a modal for displaying media
 function createModal(media, clickedId) {
+    let modal;
+
+    // If the modal doesn't exist, create it and add event listeners
+    if (!modal) {
+        modal = document.querySelector("#lightbox_modal");
+        const closeButton = modal.querySelector('.close_button');
+        closeButton.addEventListener('click', handleClose);
+        modal.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                handleClose();
+            }
+        });
+    }
+
     modal = document.querySelector("#lightbox_modal");
     const closeButton = modal.querySelector('.close_button');
     const prevButton = modal.querySelector('.previous_button');
     const nextButton = modal.querySelector('.next_button');
 
-    let currentIndex = media.find(obj => obj.id === clickedId);
+    let currentIndex = media.findIndex(obj => obj.id === clickedId);
     
     document.querySelector("body > main").style.pointerEvents = "none"
     document.body.style.overflow = "hidden"
     modal.setAttribute('aria-hidden', 'false');
     modal.setAttribute('aria-modal', 'true');
 
-    // Remove event listeners from previous and next buttons
     function removeEventListeners() {
         prevButton.removeEventListener('click', showPreviousMedia);
         nextButton.removeEventListener('click', showNextMedia);
         modal.removeEventListener('keydown', handleKeyDown);
     }
 
-    // Remove existing event listeners before adding new ones
     closeButton.addEventListener('click', removeEventListeners);
     modal && modal.addEventListener('keydown', e => modal && e.key === 'Escape' && removeEventListeners());
     
@@ -106,6 +127,7 @@ function createModal(media, clickedId) {
 
     showMedia(clickedId);
 
+     // Add event listeners for navigating through media in the modal
     if (modal) {
         prevButton.addEventListener('click', showPreviousMedia);
         nextButton.addEventListener('click', showNextMedia);
@@ -125,7 +147,6 @@ function createModal(media, clickedId) {
             return
         } else {
             showMedia(nextButton.dataset.nextId);
-
         }
     }
 
@@ -145,14 +166,13 @@ function createModal(media, clickedId) {
         modal.close();
     }
 
-    // Event listeners for modal close
     closeButton.addEventListener('click', handleClose);
     modal && modal.addEventListener('keydown', e => modal && e.key === 'Escape' && handleClose());
 
+    // Add the modal to the body of the document
     document.body.appendChild(modal);
     return modal;
 }
-
 
 function displayModal(modal) {
     if (!modal) {
@@ -161,7 +181,6 @@ function displayModal(modal) {
     }
     modal.setAttribute('aria-hidden', 'false');
     modal.showModal();    
-
 }
 
 function sortByDate(media) {
@@ -176,80 +195,70 @@ function sortedByTitle(media) {
     return media.sort((a, b) => a.title.localeCompare(b.title));
 }
 
+// Initialize the page
 async function init() {
-    let sortedMedia;
     const urlParams = new URLSearchParams(window.location.search);
     const id = Number(urlParams.get("id"));
+
+    // Fetch and display media
     const media = await getMedia(id);
+    let sortedByDateMedia = sortByDate(media);
+    await displayMedia(sortedByDateMedia);
 
-    // Sort media by date on loading the page
-    let sortedByDateMedia = sortByDate(media); // Sort media by date
-    if (sortedByDateMedia) {
-        sortedByDateMedia.forEach(item => {
-            displayMedia(item); // Display each sorted media item
-        });
-    }
-
-    //Stock sort functions in object
+    // Sort media by date by default
     const sortFunctions = {
-        date: sortByDate,
-        popularity: sortedByLikes,
-        title: sortedByTitle
-    }
+        "date": sortByDate,
+        "popularity": sortedByLikes,
+        "title": sortedByTitle
+    };
 
-    //Sort by date by default
-    sortedMedia = sortFunctions.date(media.slice());
+    // Sort media by date by default
+    let sortedMedia = sortFunctions["date"](media.slice());
 
-    // Initial event listener setup
-    updateEventListeners(sortedMedia);
-    
-    // Sort media onchange sort select
+    // Add event listener for changing the sort order
     const sort = document.querySelector('#sort');
-    sort.addEventListener('change', e => {
-
-        // Clear media container before sorting
+    sort.addEventListener('change', async (e) => {
         const mediaContainer = document.querySelector('.media-section');
-        mediaContainer.innerHTML = '';
+        mediaContainer.innerHTML = ''; // Clear previous media
 
-        // Get sort function from object based on text content of "option"
         const sortFunction = sortFunctions[e.target.value];
         if (sortFunction) {
             sortedMedia = sortFunction(media.slice());
-            sortedMedia.forEach(displayMedia);
         } else {
-            media.forEach(displayMedia);
+            sortedMedia = media;
         }
 
-        // Update event listeners after sorting
+        await displayMedia(sortedMedia);
         updateEventListeners(sortedMedia);
-    })
-    // Await displayMedia to finish before updating event listeners
-    await displayMedia(sortedMedia);
-        
-    function updateEventListeners(sortedMedia) {
-        const mediaElements = document.querySelectorAll('.media-element');
+    });
 
-        function handleModalCreation(elem) {
-            if (elem) {
-                const id = Number(elem.id);
-                const modal = createModal(sortedMedia, id);
-                displayModal(modal);
-            }
+    // Add event listeners for opening the modal
+    updateEventListeners(sortedMedia);
+}
+
+function updateEventListeners(sortedMedia) {
+    const mediaElements = document.querySelectorAll('.media-element');
+
+    function handleModalCreation(elem) {
+        if (elem) {
+            const id = Number(elem.id);
+            // Create a modal for the media with the given id
+            const modal = createModal(sortedMedia, id);
+            displayModal(modal);
         }
-
-        // Add event listener to each media container
-        mediaElements.forEach(elem => {
-            elem.addEventListener('click', () => {
-                handleModalCreation(elem)
-            });
-            elem.addEventListener('keydown', e => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    handleModalCreation(elem);
-                }
-            });
-        });
     }
+
+    mediaElements.forEach(elem => {
+        elem.addEventListener('click', () => {
+            handleModalCreation(elem);
+        });
+        elem.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleModalCreation(elem);
+            }
+        });
+    });
 }
 
 init();
