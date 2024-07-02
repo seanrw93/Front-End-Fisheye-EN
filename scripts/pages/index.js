@@ -29,11 +29,11 @@ async function getPhotographers(id = null) {
 async function displayData(photographer) {
     const photographerFactory = new PhotographerFactory(photographer);
 
-    if (window.location.pathname.includes('index.html')) {
+    if (window.location.pathname.includes("index.html")) {
         const photographersSection = document.querySelector(".photographer_section");
         const userCardDOM = photographerFactory.getUserCardDOM();
         photographersSection.appendChild(userCardDOM);
-    } else if (window.location.pathname.includes('photographer.html')) {
+    } else if (window.location.pathname.includes("photographer.html")) {
         const headerCardDOM = photographerFactory.getPhotographerPageDOM();
         return headerCardDOM;
     }
@@ -44,7 +44,7 @@ async function init() {
     const urlParams = new URLSearchParams(window.location.search);
     const id = Number(urlParams.get("id"));
 
-    if (window.location.pathname.includes('photographer.html')) {
+    if (window.location.pathname.includes("photographer.html")) {
         // If no id is provided or the id is not a number, redirect to the index page
         if (!id || isNaN(id)) {
             console.log("No photographer id provided");
@@ -57,7 +57,7 @@ async function init() {
         if (photographer) {
             await displayData(photographer);
         }
-    } else if (window.location.pathname.includes('index.html')) {
+    } else if (window.location.pathname.includes("index.html")) {
         // If the current page is the index page, fetch all photographers data and display it
         const photographers = await getPhotographers();
         photographers.forEach(displayData);

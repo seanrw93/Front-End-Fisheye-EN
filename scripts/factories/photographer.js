@@ -2,7 +2,7 @@ export class PhotographerFactory {
     constructor(data) {
 
         if (!data) {
-            throw new Error('Data is undefined');
+            throw new Error("Data is undefined");
         }
 
         const { id, portrait, name, country, city, tagline, price } = data;
@@ -17,7 +17,7 @@ export class PhotographerFactory {
 
     // Method to create the image element for a photographer
     createImg() {
-        const img = document.createElement('img');
+        const img = document.createElement("img");
         img.setAttribute("src", this.picture);
         img.setAttribute("alt", this.name);
         img.classList.add("photographer-portrait");
@@ -26,15 +26,18 @@ export class PhotographerFactory {
 
     // Method to create the name element for a photographer
     createName() {
-        const h2 = document.createElement('h2');
+        const h2 = document.createElement("h2");
         h2.textContent = this.name;
         h2.classList.add("photographer-name");
+        if (window.location.pathname != "/index.html") {
+            h2.focus();
+        }
         return h2;
     }
 
     // Method to create the location element for a photographer
     createLocation() {
-        const h3 = document.createElement('h3');
+        const h3 = document.createElement("h3");
         h3.textContent = `${this.city}, ${this.country}`;
         h3.classList.add("photographer-location");
         return h3;
@@ -42,7 +45,7 @@ export class PhotographerFactory {
 
     // Method to create the tagline element for a photographer
     createTagline() {
-        const pTagline = document.createElement('p');
+        const pTagline = document.createElement("p");
         pTagline.textContent = this.tagline;
         pTagline.classList.add("photographer-tagline");
         return pTagline;
@@ -50,7 +53,7 @@ export class PhotographerFactory {
 
     // Method to create the price element for a photographer
     createPrice() {
-        const pPrice = document.createElement('p');
+        const pPrice = document.createElement("p");
         pPrice.textContent = `$${this.price}/day`;
         pPrice.classList.add("photographer-price");
         return pPrice;
@@ -58,17 +61,20 @@ export class PhotographerFactory {
 
     // Method to create the DOM structure for a photographer card 
     getUserCardDOM() {
-        const article = document.createElement('article');
+        const article = document.createElement("article");
         article.setAttribute("role", "article");
 
-        const link = document.createElement('a');
+        // Create a link to the photographer page
+        const link = document.createElement("a");
         link.setAttribute("href", `./photographer.html?id=${this.id}`);
         link.setAttribute("aria-label", `See ${this.name}'s portfolio`);
 
+        // Create the image element
         const img = this.createImg();
         link.appendChild(img);
         article.appendChild(link);
 
+        // Append the name, location, tagline and price elements
         article.appendChild(this.createName());
         article.appendChild(this.createLocation());
         article.appendChild(this.createTagline());
@@ -82,6 +88,7 @@ export class PhotographerFactory {
         const title = document.querySelector("title");
         title.textContent = `FishEye - ${this.name}`;
 
+        // Append the name, location, tagline and price elements
         const divInfo = document.querySelector(".photographer-info");
         divInfo.appendChild(this.createName());
         divInfo.appendChild(this.createLocation());

@@ -6,7 +6,7 @@
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <title></title>
+    <title>Portfolio page</title>
     <script src="https://kit.fontawesome.com/c9fd0cd478.js" crossorigin="anonymous" defer></script>
   </head>
   <body>
@@ -29,13 +29,13 @@
           <option value="title">Title</option>
         </select>
       </div>
-      <div class="media-section" aria-label="Media section"></div>
+      <div class="media-section" aria-label="Photographer media"></div>
     </main>
 
     <!-- Total likes counter -->
-    <div class="fixed-counter" role="contentinfo">
-      <div class="total-counter" aria-live="polite" aria-label="Total likes and price">
-          <span></span>
+    <div class="fixed-counter" role="contentinfo" aria-label="Total likes and price">
+      <div class="total-counter" >
+          <span aria-live="polite"></span>
           <i class="fas fa-heart"></i>
       </div>
       <div>
@@ -44,9 +44,9 @@
     </div>
 
     <!-- Contact modal start-->
-    <dialog id="contact_modal" aria-labelledby="dialog_label" aria-hidden="true">
+    <dialog id="contact_modal" role="dialog" aria-labelledby="dialog_label" aria-hidden="true">
       <header>
-        <h2 id="dialog_label">Contact me</h2>
+        <h2 id="dialog_label" aria-live="polite">Contact me</h2>
         <button class="close_button" tabindex="0" aria-label="Close">
           <img src="assets/icons/close.svg" alt="Close"/>
         </button>
@@ -74,22 +74,21 @@
     <!-- Contact modal end-->
 
     <!-- Lightbox modal -->
-    <dialog id="lightbox_modal" role="dialog" aria-label="Media modal" aria-hidden="true" aria-modal="false" tabindex="-1">
+    <dialog id="lightbox_modal" role="dialog" aria-labelledby="lightbox_modal" aria-hidden="true">
       <button class="close_button" aria-label="Close">
           <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M42 4.23L37.77 0L21 16.77L4.23 0L0 4.23L16.77 21L0 37.77L4.23 42L21 25.23L37.77 42L42 37.77L25.23 21L42 4.23Z" fill="white"/>
           </svg>
       </button>
-      <div role="main">
-          <div class="media-navigation">
-              <button class="previous_button" aria-label="Previous media" data-previous-id="">
-                  <i class="fa-solid fa-chevron-left"></i>
-              </button>
-              <div class="lightbox-media"></div>
-              <button class="next_button" aria-label="Next media" data-next-id="">
-                  <i class="fa-solid fa-chevron-right"></i>
-              </button>
-          </div>
+      <div class="media-navigation">
+          <button class="previous_button" aria-label="Previous media" data-previous-id="">
+              <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div class="lightbox-media" tabindex="0"></div>
+          <button class="next_button" aria-label="Next media" data-next-id="">
+              <i class="fa-solid fa-chevron-right"></i>
+          </button>
+      </div>
       </div>
       <footer>
           <div class="media-title"></div>
