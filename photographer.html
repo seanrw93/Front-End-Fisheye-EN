@@ -54,11 +54,11 @@
       <form>
         <div>
           <label for="firstName">First name</label>
-          <input id="firstName"  name="firstName" type="text" aria-required="true" required/>
+          <input id="firstName"  name="firstName" type="text" pattern="^[A-Za-z]+$" aria-required="true" required/>
         </div>
         <div>
           <label for="lastName">Last name</label>
-          <input id="lastName" name="lastName" type="text" aria-required="true" required/>
+          <input id="lastName" name="lastName" type="text" pattern="^[A-Za-z]+$" aria-required="true" required/>
         </div>
         <div>
           <label for="email">Email</label>
@@ -66,7 +66,7 @@
         </div>
         <div>
           <label for="message">Your message</label>
-          <textarea id="message" name="message" rows="5"></textarea>
+          <textarea id="message" name="message" rows="5" minlength="10" required></textarea>
         </div>
         <button type="submit" class="submit_button modal_button" aria-label="Submit form" tabindex="0">Send</button>
       </form>

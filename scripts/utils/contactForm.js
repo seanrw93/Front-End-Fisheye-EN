@@ -56,11 +56,11 @@
 
     // Getters to get the form field values
         get getFirstName() {
-            return this.firstName.value.charAt(0).toUpperCase() + this.firstName.value.slice(1);
+            return this.firstName.value.charAt(0).toUpperCase() + this.firstName.value.toLowerCase().slice(1);
         }
 
         get getLastName() {
-            return this.lastName.value.charAt(0).toUpperCase() + this.lastName.value.slice(1);
+            return this.lastName.value.charAt(0).toUpperCase() + this.lastName.value.toLowerCase().slice(1);
         }
 
         get getEmail() {
@@ -68,7 +68,7 @@
         }
 
         get getMessage() {
-            return this.message.value;
+            return this.message.value.toLowerCase();
         }
 
     // Method to convert the form data to JSON
