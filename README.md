@@ -30,7 +30,7 @@ Accessibility is a top priority for this project. The website has been tested us
 
 ## Live Demo
 
-You can view a live version of the project here: [https://seanrw93.github.io/Front-End-Fisheye-EN](https://seanrw93.github.io/Front-End-Fisheye-EN)
+You can view a live version of the project [here](https://seanrw93.github.io/Front-End-Fisheye-EN/index.html)
 
 ## License
 
